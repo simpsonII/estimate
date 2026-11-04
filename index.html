@@ -857,6 +857,22 @@
                 enBtn.classList.replace('inactive', 'active');
                 krBtn.classList.replace('active', 'inactive');
             }
+
+            syncInputsFromState();
+            renderPreview();
+            showToast(type === 'kr' ? '한국어 디자인 스튜디오 양식이 적용되었습니다.' : '영문 레퍼런스 원본 양식이 적용되었습니다.');
+        }
+
+        function resetColors() {
+            state.paperTone = '#f6f6f4';
+            state.textColor = '#141414';
+            state.accentColor = '#181818';
+            state.borderColor = '#181818';
+            syncInputsFromState();
+            renderPreview();
+            showToast('기본 컬러 테마로 복원되었습니다.');
+        }
+
         // 1. 메타 필드 에디터 렌더링 (모바일 및 좁은 화면에서도 카드 밖으로 절대 튀어나가지 않도록 그리드 비율 적용)
         function renderMetaEditor() {
             const container = document.getElementById('meta-fields-container');
@@ -1157,7 +1173,32 @@
             document.getElementById('inp-subtitle').value = state.subtitle;
             document.getElementById('inp-company').value = state.company;
             document.getElementById('inp-currency').value = state.currency;
-            
+
+            document.getElementById('inp-color-paper').value = state.paperTone || '#f6f6f4';
+            document.getElementById('txt-color-paper').textContent = state.paperTone || '#f6f6f4';
+            document.getElementById('inp-color-text').value = state.textColor || '#141414';
+            document.getElementById('txt-color-text').textContent = state.textColor || '#141414';
+            document.getElementById('inp-color-accent').value = state.accentColor || '#181818';
+            document.getElementById('txt-color-accent').textContent = state.accentColor || '#181818';
+            document.getElementById('inp-color-border').value = state.borderColor || '#181818';
+            document.getElementById('txt-color-border').textContent = state.borderColor || '#181818';
+
+            document.getElementById('inp-bill-title').value = state.billTitle;
+            document.getElementById('inp-bill-lines').value = state.billLines;
+            document.getElementById('inp-ship-title').value = state.shipTitle;
+            document.getElementById('inp-ship-lines').value = state.shipLines;
+            document.getElementById('inp-notes-title').value = state.notesTitle;
+            document.getElementById('inp-notes-content').value = state.notesContent;
+            document.getElementById('inp-footer-ThankYou').value = state.footerThankYou;
+            document.getElementById('inp-footer-address').value = state.footerAddress;
+            document.getElementById('inp-website').value = state.website;
+            document.getElementById('inp-show-socials').checked = state.showSocials;
+
+            renderMetaEditor();
+            renderItemsEditor();
+            renderSummaryEditor();
+        }
+
         // 실시간 종이 미리보기 렌더링 (html2canvas 캡처 시에도 1px의 어긋남이 없도록 설계)
         function renderPreview() {
             const paper = document.getElementById('invoice-paper');
