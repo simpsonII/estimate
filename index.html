@@ -368,12 +368,12 @@
                     <div id="items-editor-list" class="space-y-3"></div>
                 </section>
 
-                <!-- 섹션 4: 세금/할인 및 하단 푸터 -->
+                <!-- 섹션 4: 부가세(퍼센트 자동계산) / 노트 / 하단 푸터 -->
                 <section class="apple-card p-4 sm:p-5 space-y-3.5">
                     <div class="flex items-center justify-between">
                         <div>
-                            <h2 class="text-[15px] sm:text-[16px] font-bold text-[#1D1D1F]">4. 부가세 / 노트 / 하단 푸터</h2>
-                            <p class="text-[11.5px] text-[#86868B]">세금, 계좌 안내 및 하단 정보를 입력합니다.</p>
+                            <h2 class="text-[15px] sm:text-[16px] font-bold text-[#1D1D1F]">4. 세금/할인(% 자동계산) 및 푸터</h2>
+                            <p class="text-[11.5px] text-[#86868B]">값에 '10%'처럼 입력하면 서브토털 기준 자동계산됩니다.</p>
                         </div>
                         <button type="button" onclick="addSummaryRow()" class="apple-btn text-[11.5px] font-semibold text-[#1D1D1F] bg-[#F5F5F7] hover:bg-[#E5E5EA] px-2.5 py-1 rounded-lg flex items-center gap-1">
                             <i data-lucide="plus" class="w-3 h-3"></i> 합계항목 추가
@@ -496,7 +496,7 @@
             }
         };
 
-        // 한국어 디자인 스튜디오 기본 데이터
+        // 한국어 디자인 스튜디오 기본 데이터 (value에 '10%' 입력 시 서브토털 기준 자동계산)
         const PRESET_KR = {
             greeting: "hello.",
             subtitle: "THIS IS YOUR DESIGN QUOTATION",
@@ -559,7 +559,7 @@
             notesTitle: "NOTES",
             notesContent: "• 본 견적서는 발행일로부터 30일간 유효하며, 인쇄 제작비(용지/후가공 실비)는 별도입니다.\n• 입금 계좌: 신한은행 140-012-987654 (예금주: 스튜디오모노리스)",
             extraSummary: [
-                { label: "VAT (부가가치세 10%)", amount: 700000 }
+                { label: "VAT (부가가치세 10%)", value: "10%" }
             ],
             footerAddress: "서울특별시 성동구 연무장길 73, 4F\n스튜디오 모노리스\nhello@studiomonolith.kr\n+82 2-512-0901",
             footerThankYou: "THANKS FOR\nYOUR BUSINESS",
@@ -603,8 +603,8 @@
             notesTitle: "NOTES",
             notesContent: "Please gift wrap, thanks!",
             extraSummary: [
-                { label: "Shipping", amount: 10.00 },
-                { label: "Sales Tax", amount: 17.51 }
+                { label: "Shipping", value: "10" },
+                { label: "Sales Tax (5%)", value: "5%" }
             ],
             footerAddress: "1 Centre Street\nNew York City, NY 10001\nsupport@acmecorp.com\n+1 555 123 456",
             footerThankYou: "THANKS FOR\nYOUR BUSINESS",
@@ -628,6 +628,16 @@
             }
             const sym = state.currency === 'EUR' ? '€' : '$';
             return sym + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // 퍼센트 계산 파서 (예: "10%" -> 서브토털의 10%, "700000" 또는 빈칸 -> 고정 금액)
+        function calculateSummaryAmount(valStr, subtotal) {
+            const str = (valStr + '').trim();
+            if (str.endsWith('%')) {
+                const percent = parseFloat(str) || 0;
+                return Math.round(subtotal * (percent / 100));
+            }
+            return Number(str) || 0;
         }
 
         // 화면 보기 모드 전환
@@ -687,7 +697,7 @@
             }
         }
 
-        // 확대/축소 및 스크롤 영역 동기화 (확대 시에도 문서 하단까지 완벽하게 스크롤 가능)
+        // 확대/축소 및 스크롤 영역 동기화
         function adjustZoom(delta) {
             currentZoom = Math.min(1.6, Math.max(0.35, +(currentZoom + delta).toFixed(2)));
             applyZoom();
@@ -717,7 +727,6 @@
             wrapper.style.transform = `scale(${currentZoom})`;
             document.getElementById('zoom-label').textContent = `${Math.round(currentZoom * 100)}%`;
 
-            // 실제 콘텐츠 높이에 스케일 비율을 곱해 스크롤 컨테이너 높이를 정확히 확보
             const rawHeight = host.offsetHeight || 1046;
             const scaledHeight = Math.ceil(rawHeight * currentZoom);
             const scaledWidth = Math.ceil(740 * currentZoom);
@@ -790,7 +799,7 @@
             renderPreview();
         }
 
-        // 2. 품목 에디터 (대분류 + 메인품목 + 세부품목)
+        // 2. 품목 에디터
         function renderItemsEditor() {
             const container = document.getElementById('items-editor-list');
             container.innerHTML = state.items.map((item, idx) => {
@@ -991,16 +1000,16 @@
             renderPreview();
         }
 
-        // 3. 합계 요약 에디터
+        // 3. 합계 요약 에디터 (퍼센트 및 금액 자동계산 지원)
         function renderSummaryEditor() {
             const container = document.getElementById('extra-summary-container');
             container.innerHTML = state.extraSummary.map((row, idx) => `
                 <div class="grid grid-cols-12 items-center gap-2">
                     <div class="col-span-7">
-                        <input type="text" value="${escapeHtml(row.label)}" oninput="updateSummaryRow(${idx}, 'label', this.value)" class="apple-input !py-1.5 !px-2.5 text-[12.5px]" placeholder="항목명 (예: VAT 10%)">
+                        <input type="text" value="${escapeHtml(row.label)}" oninput="updateSummaryRow(${idx}, 'label', this.value)" class="apple-input !py-1.5 !px-2.5 text-[12.5px]" placeholder="항목명 (예: 부가세)">
                     </div>
                     <div class="col-span-4">
-                        <input type="number" value="${row.amount}" oninput="updateSummaryRow(${idx}, 'amount', this.value)" class="apple-input !py-1.5 !px-2.5 text-right font-mono font-semibold text-[12.5px]">
+                        <input type="text" value="${escapeHtml(row.value)}" oninput="updateSummaryRow(${idx}, 'value', this.value)" class="apple-input !py-1.5 !px-2.5 text-right font-mono font-semibold text-[12.5px]" placeholder="금액 또는 10%">
                     </div>
                     <div class="col-span-1 flex justify-end">
                         <button type="button" onclick="removeSummaryRow(${idx})" class="p-1 text-[#86868B] hover:text-red-500">
@@ -1012,11 +1021,11 @@
             lucide.createIcons();
         }
         function updateSummaryRow(idx, key, val) {
-            state.extraSummary[idx][key] = key === 'amount' ? Number(val) : val;
+            state.extraSummary[idx][key] = val;
             renderPreview();
         }
         function addSummaryRow() {
-            state.extraSummary.push({ label: "할인 또는 부가세", amount: 0 });
+            state.extraSummary.push({ label: "부가세", value: "10%" });
             renderSummaryEditor();
             renderPreview();
         }
@@ -1058,7 +1067,7 @@
             renderSummaryEditor();
         }
 
-        // [핵심] SVG 고정 좌표 헤드라인 + 서브타이틀 통합 블록 (화면과 다운로드 파일에서 "hello."와 서브타이틀이 절대 겹치지 않도록 100% 보장)
+        // SVG 고정 좌표 헤드라인 + 서브타이틀 통합 블록
         function buildHeroHeaderSvgHtml(greetingText, subtitleText, txtCol) {
             const gText = (greetingText || 'hello.').trim();
             const sText = (subtitleText || '').trim().toUpperCase();
@@ -1081,31 +1090,31 @@
 
             return `
                 <svg width="360" height="${totalH}" viewBox="0 0 360 ${totalH}" style="display:block; overflow:visible;">
-                    <text x="0" y="${gY}" fill="${txtCol}" font-family="'Inter', 'Pretendard', sans-serif" font-weight="900" font-size="${gSize}px" letter-spacing="-0.055em">${escapeHtml(gText)}</text>
-                    <text x="2" y="${sY}" fill="${txtCol}" font-family="'Inter', 'Pretendard', sans-serif" font-weight="800" font-size="12px" letter-spacing="0.04em">${escapeHtml(sText)}</text>
+                    <text x="0" y="${gY}" fill="${txtCol}" font-family="'Pretendard', 'Inter', sans-serif" font-weight="900" font-size="${gSize}px" letter-spacing="-0.055em">${escapeHtml(gText)}</text>
+                    <text x="2" y="${sY}" fill="${txtCol}" font-family="'Pretendard', 'Inter', sans-serif" font-weight="800" font-size="12px" letter-spacing="0.04em">${escapeHtml(sText)}</text>
                 </svg>
             `;
         }
 
-        // [핵심] SVG 고정 좌표 정가 취소선 (다운로드 시 취소선이 위로 밀리지 않고 숫자 정중앙을 통과)
+        // SVG 고정 좌표 정가 취소선
         function buildStrikePriceSvgHtml(priceStr, txtCol) {
             const w = Math.max(64, priceStr.length * 6.8);
             const lineStart = Math.max(0, w - (priceStr.length * 6.1));
             return `
                 <svg width="${w}" height="15" viewBox="0 0 ${w} 15" style="display:block; margin-left:auto; overflow:visible;">
-                    <text x="${w}" y="11" text-anchor="end" fill="${txtCol}" fill-opacity="0.45" font-family="'Inter', 'Pretendard', sans-serif" font-size="9.5px" font-weight="500">${escapeHtml(priceStr)}</text>
+                    <text x="${w}" y="11" text-anchor="end" fill="${txtCol}" fill-opacity="0.45" font-family="'Pretendard', 'Inter', sans-serif" font-size="9.5px" font-weight="500">${escapeHtml(priceStr)}</text>
                     <line x1="${lineStart}" y1="7.5" x2="${w}" y2="7.5" stroke="${txtCol}" stroke-opacity="0.65" stroke-width="1.2"/>
                 </svg>
             `;
         }
 
-        // 품목 행 HTML 빌더 (정확한 4열 비율: 설명 52% / 수량 10% / 단가 18% / 합계 20%)
+        // 품목 행 HTML 빌더
         function buildItemRowHtml(item, txtCol, accCol) {
             if (item.type === 'category') {
                 const badgeSvg = item.categoryCode ? `
                     <svg width="24" height="17" viewBox="0 0 24 17" style="display:block; flex-shrink:0; margin-right:8px;">
                         <rect x="0" y="0" width="24" height="17" rx="3.5" fill="${accCol}" fill-opacity="0.1"/>
-                        <text x="12" y="11.8" text-anchor="middle" fill="${accCol}" font-family="'Inter', 'Pretendard', sans-serif" font-size="9.5px" font-weight="900">${escapeHtml(item.categoryCode)}</text>
+                        <text x="12" y="11.8" text-anchor="middle" fill="${accCol}" font-family="'Pretendard', 'Inter', sans-serif" font-size="9.5px" font-weight="900">${escapeHtml(item.categoryCode)}</text>
                     </svg>
                 ` : '';
                 return `
@@ -1138,7 +1147,7 @@
                                     ${sub.qty ? `<span style="font-size:9.5px; opacity:0.65; margin-left:4px; white-space:nowrap;">(${escapeHtml(sub.qty)})</span>` : ''}
                                 </div>
                             </div>
-                            ${Number(sub.price) > 0 ? `<span class="organic-num" style="font-family:'Inter',monospace; font-size:9.5px; opacity:0.8; flex-shrink:0;">${formatMoney(sub.price)}</span>` : ''}
+                            ${Number(sub.price) > 0 ? `<span class="organic-num" style="font-family:'Pretendard',monospace; font-size:9.5px; opacity:0.8; flex-shrink:0;">${formatMoney(sub.price)}</span>` : ''}
                         </div>
                     `).join('')}
                 </div>
@@ -1168,7 +1177,6 @@
             `;
         }
 
-        // 품목 높이 계산 (A4 자동 페이지네이션용)
         function estimateItemHeight(item) {
             if (item.type === 'category') return 38;
             const subs = item.subItems || [];
@@ -1193,7 +1201,6 @@
                 }
             });
 
-            // A4 높이(1046px, 상하 패딩 56px*2 = 112px -> 내부 가용 높이 934px)
             const SINGLE_PAGE_ITEMS_LIMIT = 410;
             const FIRST_PAGE_ITEMS_LIMIT = 560;
             const MIDDLE_PAGE_ITEMS_LIMIT = 720;
@@ -1255,12 +1262,12 @@
                 </div>
             `;
             state.extraSummary.forEach(row => {
-                const amt = Number(row.amount) || 0;
-                grandTotal += amt;
+                const computedAmt = calculateSummaryAmount(row.value, subtotal);
+                grandTotal += computedAmt;
                 summaryRowsHtml += `
                     <div style="padding:6px 0; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,0,0,0.12); color:${txtCol};">
                         <span class="organic-text" style="font-weight:500;">${escapeHtml(row.label)}</span>
-                        <span class="organic-num" style="font-weight:600;">${formatMoney(amt)}</span>
+                        <span class="organic-num" style="font-weight:600;">${formatMoney(computedAmt)}</span>
                     </div>
                 `;
             });
@@ -1278,7 +1285,6 @@
                 const pageNum = pageIdx + 1;
 
                 const headerSection = page.isFirst ? `
-                    <!-- 상단 헤드라인 & 우측 회사 메타 -->
                     <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:24px; margin-bottom:32px;">
                         <div class="preview-clickable" onclick="focusInput('inp-greeting')" style="flex:1; min-width:0;">
                             ${buildHeroHeaderSvgHtml(state.greeting, state.subtitle, txtCol)}
@@ -1289,7 +1295,6 @@
                         </div>
                     </div>
 
-                    <!-- 수신자 & 프로젝트 정보 2단 그리드 -->
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:36px; margin-bottom:26px; font-size:11.5px; line-height:1.62;">
                         <div class="preview-clickable" onclick="focusInput('inp-bill-lines')" style="min-width:0;">
                             <div class="organic-text" style="font-weight:800; font-size:10.5px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; color:${accCol};">${escapeHtml(state.billTitle)}</div>
@@ -1301,7 +1306,6 @@
                         </div>
                     </div>
                 ` : `
-                    <!-- 이어지는 페이지 상단 바 -->
                     <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; margin-bottom:18px; border-bottom:1px solid rgba(0,0,0,0.15); font-size:10.5px; color:${txtCol};">
                         <div style="font-weight:800;">${escapeHtml(state.company)} <span style="opacity:0.5; font-weight:400; margin-left:6px;">— CONTINUED</span></div>
                         <div style="font-family:monospace; font-weight:700; opacity:0.65;">PAGE ${pageNum} / ${totalPages}</div>
@@ -1309,21 +1313,18 @@
                 `;
 
                 const itemsTableSection = page.items.length > 0 ? `
-                    <!-- 테이블 컬럼 헤더 -->
                     <div style="border-top:2px solid ${bdrCol}; border-bottom:1px solid rgba(0,0,0,0.15); padding:9px 0; display:flex; align-items:center; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:${txtCol};">
                         <div style="width:52%; padding-right:12px;">ITEM DESCRIPTION</div>
                         <div style="width:10%; text-align:center;">QTY</div>
                         <div style="width:18%; text-align:right;">PRICE</div>
                         <div style="width:20%; text-align:right;">ITEM TOTAL</div>
                     </div>
-                    <!-- 품목 리스트 -->
                     <div class="divide-y divide-black/10" style="border-bottom:1px solid rgba(0,0,0,0.2);">
                         ${page.items.map(it => buildItemRowHtml(it, txtCol, accCol)).join('')}
                     </div>
                 ` : '';
 
                 const summarySection = page.isLast ? `
-                    <!-- 노트 & 합계 요약 -->
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px; padding-top:18px; padding-bottom:22px; border-bottom:2px solid ${bdrCol};">
                         <div class="preview-clickable" onclick="focusInput('inp-notes-content')" style="min-width:0; padding-right:8px;">
                             <div class="organic-text" style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px; color:${accCol};">${escapeHtml(state.notesTitle)}</div>
@@ -1341,7 +1342,6 @@
                 `;
 
                 const footerSection = page.isLast ? `
-                    <!-- 하단 에디토리얼 푸터 -->
                     <div class="preview-clickable" onclick="focusInput('inp-footer-address')" style="padding-top:16px;">
                         <div style="display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:16px; margin-bottom:14px;">
                             <div class="organic-text" style="text-align:right; font-size:10px; line-height:1.6; white-space:pre-wrap; padding-right:8px; color:${txtCol};">${escapeHtml(state.footerAddress)}</div>
@@ -1384,7 +1384,7 @@
             }, 2600);
         }
 
-        // 고해상도 A4 JPG & 다중페이지 PDF 내보내기
+        // 고해상도 A4 JPG & 다중페이지 PDF 내보내기 (웹폰트 스타일 임베딩 보장)
         async function exportDocument(format) {
             const pageSheets = Array.from(document.querySelectorAll('.invoice-page-sheet'));
             if (pageSheets.length === 0) return;
@@ -1414,6 +1414,7 @@
                     clone.style.margin = '0';
                     clone.style.width = '740px';
                     clone.style.height = '1046px';
+                    clone.style.fontFamily = "'Pretendard', 'Inter', -apple-system, sans-serif";
                     offscreenHost.appendChild(clone);
 
                     await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -1426,6 +1427,7 @@
                         scrollX: 0,
                         scrollY: 0,
                         useCORS: true,
+                        allowTaint: true,
                         backgroundColor: state.paperTone || '#f6f6f4',
                         logging: false
                     });
