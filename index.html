@@ -35,10 +35,11 @@
         }
 
         html, body {
+            margin: 0;
+            padding: 0;
             width: 100%;
-            max-width: 100vw;
-            overflow-x: hidden;
-            overscroll-behavior: none;
+            height: 100%;
+            overflow: hidden;
             font-family: var(--font-sans);
             background-color: var(--apple-bg);
             color: var(--apple-text);
@@ -53,32 +54,32 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Apple 스타일 부드러운 전환 및 스프링 인터랙션 */
+        /* Apple 스타일 카드 */
         .apple-card {
             background: var(--apple-card);
             border-radius: 20px;
             border: 1px solid rgba(0, 0, 0, 0.06);
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
-            overflow: hidden;
-            transition: box-shadow 0.3s var(--apple-spring), border-color 0.25s ease;
+            transition: box-shadow 0.25s ease;
         }
         .apple-card:hover {
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
         }
 
-        /* 시원시원한 Apple 스타일 입력 필드 (부모 밖 돌출 방지 min-width: 0) */
+        /* 입력 필드 (부모 영역 밖으로 절대 튀어나가지 않도록 고정) */
         .apple-input {
+            display: block;
             width: 100%;
             min-width: 0;
             max-width: 100%;
             background-color: #F5F5F7;
             border: 1.5px solid transparent;
-            border-radius: 12px;
-            padding: 10px 13px;
-            font-size: 14px;
+            border-radius: 11px;
+            padding: 9px 12px;
+            font-size: 13.5px;
             font-weight: 500;
             color: #1D1D1F;
-            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.18s ease;
         }
         .apple-input::placeholder {
             color: #A1A1A6;
@@ -104,17 +105,17 @@
             transform: scale(0.96);
         }
 
-        /* 세그먼트 컨트롤 */
+        /* 상단 세그먼트 버튼 */
         .seg-pill {
             background: rgba(118, 118, 128, 0.12);
             padding: 3px;
-            border-radius: 11px;
+            border-radius: 10px;
             flex-shrink: 0;
         }
         .seg-btn {
-            border-radius: 8px;
-            padding: 6px 14px;
-            font-size: 13px;
+            border-radius: 7px;
+            padding: 5px 12px;
+            font-size: 12.5px;
             font-weight: 600;
             white-space: nowrap;
             transition: all 0.2s var(--apple-spring);
@@ -122,7 +123,7 @@
         .seg-btn.active {
             background: #FFFFFF;
             color: #1D1D1F;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
         }
         .seg-btn.inactive {
             color: #6E6E73;
@@ -131,316 +132,285 @@
             color: #1D1D1F;
         }
 
-        /* "hello." 시그니처 타이포그래피 - html2canvas 캡처 시 절대 겹치지 않는 안정적 line-height */
-        .hero-greeting {
-            display: block;
-            font-family: 'Inter', 'Pretendard', sans-serif;
-            font-weight: 900;
-            letter-spacing: -0.055em;
-            line-height: 1.05;
-            word-break: keep-all;
-            overflow-wrap: anywhere;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* 한국어 및 영문 혼용 시 어절 단위 자연스러운 줄바꿈 & 긴 영문/숫자 오버플로우 방지 */
+        /* 한국어 및 영문 혼용 어절 단위 줄바꿈 */
         .organic-text {
             word-break: keep-all;
             overflow-wrap: break-word;
         }
 
-        /* 숫자 및 금액 영역 줄바꿈 방지 및 자간 자동 조절 */
+        /* 금액 및 수량 숫자 줄바꿈 방지 */
         .organic-num {
             white-space: nowrap;
             font-variant-numeric: tabular-nums;
             letter-spacing: -0.02em;
         }
 
-        /* html2canvas 취소선 버그 완벽 해결용 커스텀 스트라이크 */
-        .custom-strike {
-            position: relative;
-            display: inline-block;
-        }
-        .custom-strike::after {
-            content: '';
-            position: absolute;
-            left: -2px;
-            right: -2px;
-            top: 52%;
-            height: 1.2px;
-            background-color: currentColor;
-            opacity: 0.75;
-            pointer-events: none;
-        }
-
-        /* 종이 위에서 직접 클릭 시 인터랙티브 가이드 */
+        /* 종이 위 클릭 가이드 */
         .preview-clickable {
             border-radius: 6px;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.15s ease;
+            cursor: pointer;
         }
         .preview-clickable:hover {
             background-color: rgba(0, 0, 0, 0.035);
-            cursor: pointer;
         }
 
-        /* 인쇄물/A4 종이 캔버스 스타일 (모바일에서도 원본 A4 비율과 레이아웃 유지) */
+        /* A4 표준 규격 캔버스 (210mm : 297mm = 740px : 1046px 엄격 고정) */
         .paper-canvas {
             position: relative;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+            width: 740px;
+            height: 1046px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
             box-sizing: border-box;
+            flex-shrink: 0;
+            overflow: hidden;
         }
 
-        /* 모바일 iOS 자동 줌 방지 및 터치 최적화 */
+        /* 모바일 iOS 자동 확대 방지 */
         @media (max-width: 640px) {
             .apple-input {
                 font-size: 16px;
-                padding: 10px 12px;
+                padding: 9px 11px;
             }
         }
 
-        /* 깔끔한 스크롤바 */
+        /* 커스텀 스크롤바 */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.16);
+            background: rgba(0, 0, 0, 0.18);
             border-radius: 9999px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.28);
+            background: rgba(0, 0, 0, 0.32);
         }
     </style>
 </head>
-<body class="h-[100dvh] w-full flex flex-col overflow-hidden select-none">
+<body class="h-screen w-screen flex flex-col overflow-hidden select-none">
 
-    <!-- Apple 스타일 반투명 블러 상단 네비게이션 바 (모바일 & 데스크톱 완벽 대응) -->
-    <header class="h-14 sm:h-16 bg-white/90 backdrop-blur-xl border-b border-black/[0.07] px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2 shrink-0 z-30 w-full">
-        <!-- 좌측: 브랜드 타이틀 & 템플릿 스위치 -->
-        <div class="flex items-center gap-2 sm:gap-4 min-w-0">
+    <!-- 1. 상단 네비게이션 헤더 -->
+    <header class="h-14 sm:h-16 bg-white/95 backdrop-blur-xl border-b border-black/[0.08] px-3 sm:px-6 flex items-center justify-between gap-2 shrink-0 z-30 w-full">
+        <!-- 좌측: 로고 & 한/영 템플릿 전환 -->
+        <div class="flex items-center gap-2.5 sm:gap-4 min-w-0">
             <div class="flex items-center gap-2 shrink-0">
-                <span class="w-8 h-8 rounded-[10px] bg-[#1D1D1F] text-white font-black text-lg flex items-center justify-center tracking-tighter shadow-sm shrink-0">h.</span>
-                <span class="font-bold text-[15px] sm:text-[16px] tracking-tight text-[#1D1D1F] hidden sm:inline">Quote Studio</span>
+                <span class="w-8 h-8 rounded-[9px] bg-[#1D1D1F] text-white font-black text-base flex items-center justify-center tracking-tighter shadow-sm">h.</span>
+                <span class="font-bold text-[15px] tracking-tight text-[#1D1D1F] hidden sm:inline">Quote Studio</span>
             </div>
 
             <div class="h-4 w-[1px] bg-black/10 hidden sm:block shrink-0"></div>
 
-            <!-- 언어/무드 프리셋 전환 -->
             <div class="seg-pill flex items-center">
-                <button onclick="applyPreset('kr')" id="preset-kr-btn" class="seg-btn active !px-2.5 sm:!px-3.5 !py-1.5 text-[12px] sm:text-[13px]">
-                    한국어
+                <button type="button" onclick="applyPreset('kr')" id="preset-kr-btn" class="seg-btn active">
+                    한국어 양식
                 </button>
-                <button onclick="applyPreset('en')" id="preset-en-btn" class="seg-btn inactive !px-2.5 sm:!px-3.5 !py-1.5 text-[12px] sm:text-[13px]">
-                    EN
+                <button type="button" onclick="applyPreset('en')" id="preset-en-btn" class="seg-btn inactive">
+                    EN 원본
                 </button>
             </div>
         </div>
 
-        <!-- 중앙: 화면 레이아웃 전환 (데스크톱 & 태블릿 표시, 모바일은 하단 플로팅 독 사용) -->
+        <!-- 중앙: 화면 분할 모드 전환 (데스크톱/태블릿) -->
         <div class="seg-pill hidden md:flex items-center">
-            <button onclick="setViewMode('split')" id="view-split-btn" class="seg-btn active flex items-center gap-1.5">
+            <button type="button" onclick="setViewMode('split')" id="view-split-btn" class="seg-btn active flex items-center gap-1.5">
                 <i data-lucide="columns" class="w-3.5 h-3.5"></i>
-                <span>분할 화면</span>
+                <span>입력 + 미리보기</span>
             </button>
-            <button onclick="setViewMode('edit')" id="view-edit-btn" class="seg-btn inactive flex items-center gap-1.5">
+            <button type="button" onclick="setViewMode('edit')" id="view-edit-btn" class="seg-btn inactive flex items-center gap-1.5">
                 <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i>
-                <span>에디터</span>
+                <span>입력 전용</span>
             </button>
-            <button onclick="setViewMode('preview')" id="view-preview-btn" class="seg-btn inactive flex items-center gap-1.5">
+            <button type="button" onclick="setViewMode('preview')" id="view-preview-btn" class="seg-btn inactive flex items-center gap-1.5">
                 <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
-                <span>프리뷰</span>
+                <span>미리보기 전용</span>
             </button>
         </div>
 
-        <!-- 우측: 고해상도 내보내기 -->
+        <!-- 우측: JPG / PDF 저장 버튼 -->
         <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <button onclick="exportDocument('jpg')" id="btn-export-jpg" class="apple-btn flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] text-[#1D1D1F] text-[12px] sm:text-[13px] font-semibold border border-black/[0.06]">
-                <i data-lucide="image" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1D1D1F]"></i>
+            <button type="button" onclick="exportDocument('jpg')" class="apple-btn flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#F5F5F7] hover:bg-[#E5E5EA] text-[#1D1D1F] text-[12px] sm:text-[13px] font-semibold border border-black/[0.08]">
+                <i data-lucide="image" class="w-3.5 h-3.5"></i>
                 <span>JPG 저장</span>
             </button>
-            <button onclick="exportDocument('pdf')" id="btn-export-pdf" class="apple-btn flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-[#1D1D1F] hover:bg-[#323236] text-white text-[12px] sm:text-[13px] font-semibold shadow-sm">
-                <i data-lucide="arrow-down-to-line" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+            <button type="button" onclick="exportDocument('pdf')" class="apple-btn flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-[#1D1D1F] hover:bg-[#323236] text-white text-[12px] sm:text-[13px] font-semibold shadow-sm">
+                <i data-lucide="arrow-down-to-line" class="w-3.5 h-3.5"></i>
                 <span>PDF 저장</span>
             </button>
         </div>
     </header>
 
-    <!-- 메인 스튜디오 워크스페이스 -->
-    <main class="flex-1 flex w-full overflow-hidden relative">
+    <!-- 2. 메인 워크스페이스 (좌측 입력 패널 + 우측 미리보기 패널) -->
+    <main class="flex-1 flex w-full h-full overflow-hidden relative">
         
-        <!-- 1. 좌측 에디터 패널 (좌우 스크롤 흔들림 완벽 차단 & 내부 카드 정렬) -->
-        <aside id="editor-panel" class="w-full md:w-[460px] lg:w-[520px] xl:w-[580px] bg-[#F5F5F7] border-r border-black/[0.07] flex flex-col h-full scroll-lock-x shrink-0 z-20">
-            <div class="p-3.5 sm:p-6 pb-28 md:pb-12 space-y-5 max-w-2xl mx-auto w-full">
+        <!-- [좌측] 입력 에디터 패널 -->
+        <aside id="editor-panel" class="w-full md:w-[440px] lg:w-[500px] xl:w-[540px] bg-[#F5F5F7] border-r border-black/[0.08] flex flex-col h-full scroll-lock-x shrink-0 z-20">
+            <div class="p-4 sm:p-5 pb-28 md:pb-12 space-y-4 max-w-xl mx-auto w-full">
 
-                <!-- 카드 1: 타이틀 & 스튜디오 아이덴티티 -->
-                <section class="apple-card p-4 sm:p-6 space-y-4">
-                    <div class="flex items-start justify-between gap-3">
-                        <div class="min-w-0">
-                            <h2 class="text-[16px] sm:text-[17px] font-bold tracking-tight text-[#1D1D1F]">타이틀 & 스튜디오 정보</h2>
-                            <p class="text-[12px] text-[#86868B] mt-0.5">견적서 상단에 표시되는 인사말과 기본 정보를 설정합니다.</p>
+                <!-- 섹션 1: 타이틀 & 스튜디오 기본 정보 -->
+                <section class="apple-card p-4 sm:p-5 space-y-4">
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <h2 class="text-[15px] sm:text-[16px] font-bold text-[#1D1D1F]">1. 타이틀 & 회사 정보</h2>
+                            <p class="text-[11.5px] text-[#86868B]">상단 헤드라인과 스튜디오 정보를 설정합니다.</p>
                         </div>
-                        <select id="inp-currency" class="bg-[#F5F5F7] hover:bg-[#EBEBED] border border-black/[0.06] text-[12px] sm:text-[13px] font-semibold text-[#1D1D1F] rounded-xl px-3 py-2 focus:outline-none cursor-pointer transition shrink-0">
-                            <option value="KRW">₩ KRW</option>
-                            <option value="USD">$ USD</option>
-                            <option value="EUR">€ EUR</option>
+                        <select id="inp-currency" class="bg-[#F5F5F7] hover:bg-[#EBEBED] border border-black/[0.08] text-[12px] font-bold text-[#1D1D1F] rounded-lg px-2.5 py-1.5 focus:outline-none cursor-pointer shrink-0">
+                            <option value="KRW">₩ KRW (원)</option>
+                            <option value="USD">$ USD (달러)</option>
+                            <option value="EUR">€ EUR (유로)</option>
                         </select>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                        <div class="min-w-0">
-                            <label class="block text-[12px] font-semibold text-[#6E6E73] mb-1.5">메인 헤드라인</label>
-                            <input type="text" id="inp-greeting" class="apple-input font-bold text-[15px]" placeholder="hello.">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11.5px] font-semibold text-[#6E6E73] mb-1">메인 헤드라인</label>
+                            <input type="text" id="inp-greeting" class="apple-input font-extrabold" placeholder="hello.">
                         </div>
-                        <div class="min-w-0">
-                            <label class="block text-[12px] font-semibold text-[#6E6E73] mb-1.5">디자인 회사 / 스튜디오명</label>
+                        <div>
+                            <label class="block text-[11.5px] font-semibold text-[#6E6E73] mb-1">디자인 회사명</label>
                             <input type="text" id="inp-company" class="apple-input font-semibold" placeholder="STUDIO MONOLITH">
                         </div>
                     </div>
 
-                    <div class="min-w-0">
-                        <label class="block text-[12px] font-semibold text-[#6E6E73] mb-1.5">서브 타이틀</label>
+                    <div>
+                        <label class="block text-[11.5px] font-semibold text-[#6E6E73] mb-1">서브 타이틀</label>
                         <input type="text" id="inp-subtitle" class="apple-input" placeholder="THIS IS YOUR DESIGN QUOTATION">
                     </div>
 
-                    <!-- 컬러 커스텀 바 -->
+                    <!-- 컬러 커스텀 -->
                     <div class="pt-3 border-t border-black/[0.06]">
-                        <div class="flex items-center justify-between mb-2.5">
-                            <span class="text-[12px] font-semibold text-[#6E6E73]">종이 & 컬러 테마</span>
-                            <button onclick="resetColors()" class="text-[12px] font-semibold text-[#86868B] hover:text-[#1D1D1F] transition">기본 컬러 복원</button>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11.5px] font-semibold text-[#6E6E73]">종이 & 서체 컬러 테마</span>
+                            <button type="button" onclick="resetColors()" class="text-[11px] font-semibold text-[#86868B] hover:text-[#1D1D1F] underline">기본값 복원</button>
                         </div>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                            <label class="flex items-center gap-2 bg-[#F5F5F7] hover:bg-[#EBEBED] p-2 rounded-xl cursor-pointer transition min-w-0">
-                                <input type="color" id="inp-color-paper" value="#f6f6f4" class="w-6 h-6 rounded-full cursor-pointer border-0 bg-transparent shrink-0">
-                                <div class="min-w-0 truncate">
-                                    <div class="text-[11px] font-semibold text-[#1D1D1F] truncate">종이 배경</div>
-                                    <div id="txt-color-paper" class="text-[10px] font-mono text-[#86868B] uppercase truncate">#f6f6f4</div>
+                            <label class="flex items-center gap-2 bg-[#F5F5F7] hover:bg-[#EBEBED] p-2 rounded-xl cursor-pointer">
+                                <input type="color" id="inp-color-paper" value="#f6f6f4" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent shrink-0">
+                                <div class="min-w-0">
+                                    <div class="text-[11px] font-bold text-[#1D1D1F] truncate">종이색</div>
+                                    <div id="txt-color-paper" class="text-[9.5px] font-mono text-[#86868B] uppercase">#f6f6f4</div>
                                 </div>
                             </label>
-                            <label class="flex items-center gap-2 bg-[#F5F5F7] hover:bg-[#EBEBED] p-2 rounded-xl cursor-pointer transition min-w-0">
-                                <input type="color" id="inp-color-text" value="#141414" class="w-6 h-6 rounded-full cursor-pointer border-0 bg-transparent shrink-0">
-                                <div class="min-w-0 truncate">
-                                    <div class="text-[11px] font-semibold text-[#1D1D1F] truncate">메인 서체</div>
-                                    <div id="txt-color-text" class="text-[10px] font-mono text-[#86868B] uppercase truncate">#141414</div>
+                            <label class="flex items-center gap-2 bg-[#F5F5F7] hover:bg-[#EBEBED] p-2 rounded-xl cursor-pointer">
+                                <input type="color" id="inp-color-text" value="#141414" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent shrink-0">
+                                <div class="min-w-0">
+                                    <div class="text-[11px] font-bold text-[#1D1D1F] truncate">본문색</div>
+                                    <div id="txt-color-text" class="text-[9.5px] font-mono text-[#86868B] uppercase">#141414</div>
                                 </div>
                             </label>
-                            <label class="flex items-center gap-2 bg-[#F5F5F7] hover:bg-[#EBEBED] p-2 rounded-xl cursor-pointer transition min-w-0">
-                                <input type="color" id="inp-color-accent" value="#181818" class="w-6 h-6 rounded-full cursor-pointer border-0 bg-transparent shrink-0">
-                                <div class="min-w-0 truncate">
-                                    <div class="text-[11px] font-semibold text-[#1D1D1F] truncate">강조 포인트</div>
-                                    <div id="txt-color-accent" class="text-[10px] font-mono text-[#86868B] uppercase truncate">#181818</div>
+                            <label class="flex items-center gap-2 bg-[#F5F5F7] hover:bg-[#EBEBED] p-2 rounded-xl cursor-pointer">
+                                <input type="color" id="inp-color-accent" value="#181818" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent shrink-0">
+                                <div class="min-w-0">
+                                    <div class="text-[11px] font-bold text-[#1D1D1F] truncate">강조색</div>
+                                    <div id="txt-color-accent" class="text-[9.5px] font-mono text-[#86868B] uppercase">#181818</div>
                                 </div>
                             </label>
-                            <label class="flex items-center gap-2 bg-[#F5F5F7] hover:bg-[#EBEBED] p-2 rounded-xl cursor-pointer transition min-w-0">
-                                <input type="color" id="inp-color-border" value="#181818" class="w-6 h-6 rounded-full cursor-pointer border-0 bg-transparent shrink-0">
-                                <div class="min-w-0 truncate">
-                                    <div class="text-[11px] font-semibold text-[#1D1D1F] truncate">구분선</div>
-                                    <div id="txt-color-border" class="text-[10px] font-mono text-[#86868B] uppercase truncate">#181818</div>
+                            <label class="flex items-center gap-2 bg-[#F5F5F7] hover:bg-[#EBEBED] p-2 rounded-xl cursor-pointer">
+                                <input type="color" id="inp-color-border" value="#181818" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent shrink-0">
+                                <div class="min-w-0">
+                                    <div class="text-[11px] font-bold text-[#1D1D1F] truncate">선 색상</div>
+                                    <div id="txt-color-border" class="text-[9.5px] font-mono text-[#86868B] uppercase">#181818</div>
                                 </div>
                             </label>
                         </div>
                     </div>
 
-                    <!-- 우측 상단 메타 항목 (견적번호, 일자 등) -->
-                    <div class="pt-3 border-t border-black/[0.06] space-y-2.5">
-                        <div class="flex items-center justify-between gap-2">
-                            <span class="text-[12px] font-semibold text-[#6E6E73]">문서 번호 및 조건 항목</span>
-                            <button onclick="addMetaField()" class="apple-btn text-[12px] font-semibold text-[#1D1D1F] bg-[#F5F5F7] hover:bg-[#E5E5EA] px-3 py-1.5 rounded-full flex items-center gap-1">
-                                <i data-lucide="plus" class="w-3.5 h-3.5"></i> 항목 추가
+                    <!-- 우측 상단 메타 정보 -->
+                    <div class="pt-3 border-t border-black/[0.06] space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11.5px] font-semibold text-[#6E6E73]">문서 번호 및 조건 항목</span>
+                            <button type="button" onclick="addMetaField()" class="apple-btn text-[11.5px] font-semibold text-[#1D1D1F] bg-[#F5F5F7] hover:bg-[#E5E5EA] px-2.5 py-1 rounded-lg flex items-center gap-1">
+                                <i data-lucide="plus" class="w-3 h-3"></i> 추가
                             </button>
                         </div>
                         <div id="meta-fields-container" class="space-y-2"></div>
                     </div>
                 </section>
 
-                <!-- 카드 2: 클라이언트 & 프로젝트 개요 -->
-                <section class="apple-card p-4 sm:p-6 space-y-4">
+                <!-- 섹션 2: 수신자 & 프로젝트 정보 -->
+                <section class="apple-card p-4 sm:p-5 space-y-3.5">
                     <div>
-                        <h2 class="text-[16px] sm:text-[17px] font-bold tracking-tight text-[#1D1D1F]">수신자 & 프로젝트 개요</h2>
-                        <p class="text-[12px] text-[#86868B] mt-0.5">클라이언트 정보와 과업 범위를 나란히 배치합니다.</p>
+                        <h2 class="text-[15px] sm:text-[16px] font-bold text-[#1D1D1F]">2. 수신자 & 프로젝트 개요</h2>
+                        <p class="text-[11.5px] text-[#86868B]">클라이언트와 프로젝트 정보를 입력합니다.</p>
                     </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                        <div class="space-y-2 min-w-0">
-                            <input type="text" id="inp-bill-title" class="apple-input font-bold text-[13px]" placeholder="CLIENT (수신)">
-                            <textarea id="inp-bill-lines" rows="4" class="apple-input text-[13px] leading-relaxed resize-none" placeholder="클라이언트 정보 입력"></textarea>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="space-y-2">
+                            <input type="text" id="inp-bill-title" class="apple-input font-bold text-[12.5px]" placeholder="CLIENT (수신)">
+                            <textarea id="inp-bill-lines" rows="4" class="apple-input text-[12.5px] leading-relaxed resize-none"></textarea>
                         </div>
-                        <div class="space-y-2 min-w-0">
-                            <input type="text" id="inp-ship-title" class="apple-input font-bold text-[13px]" placeholder="PROJECT (과업 개요)">
-                            <textarea id="inp-ship-lines" rows="4" class="apple-input text-[13px] leading-relaxed resize-none" placeholder="프로젝트 개요 입력"></textarea>
+                        <div class="space-y-2">
+                            <input type="text" id="inp-ship-title" class="apple-input font-bold text-[12.5px]" placeholder="PROJECT (과업 개요)">
+                            <textarea id="inp-ship-lines" rows="4" class="apple-input text-[12.5px] leading-relaxed resize-none"></textarea>
                         </div>
                     </div>
                 </section>
 
-                <!-- 카드 3: 계층형 디자인 견적 품목 (대분류 ➔ 중분류 ➔ 세부품목) -->
-                <section class="apple-card p-4 sm:p-6 space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div class="min-w-0">
-                            <h2 class="text-[16px] sm:text-[17px] font-bold tracking-tight text-[#1D1D1F]">견적 품목 구성</h2>
-                            <p class="text-[12px] text-[#86868B] mt-0.5">대분류 ➔ 메인 품목 ➔ 세부 항목 구조로 구성하세요.</p>
+                <!-- 섹션 3: 계층형 견적 품목 -->
+                <section class="apple-card p-4 sm:p-5 space-y-3.5">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <h2 class="text-[15px] sm:text-[16px] font-bold text-[#1D1D1F]">3. 견적 품목 (계층 구조 지원)</h2>
+                            <p class="text-[11.5px] text-[#86868B]">A4 한 장 초과 시 자동으로 다음 페이지가 생성됩니다.</p>
                         </div>
-                        <div class="flex items-center gap-2 shrink-0">
-                            <button onclick="addCategoryHeader()" class="apple-btn flex-1 sm:flex-initial justify-center px-3.5 py-2 rounded-full bg-[#F5F5F7] hover:bg-[#E5E5EA] text-[#1D1D1F] font-semibold text-[12px] flex items-center gap-1.5 border border-black/[0.05]">
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" onclick="addCategoryHeader()" class="apple-btn px-3 py-1.5 rounded-lg bg-[#F5F5F7] hover:bg-[#E5E5EA] text-[#1D1D1F] font-semibold text-[11.5px] flex items-center gap-1 border border-black/[0.06]">
                                 <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i> 대분류 추가
                             </button>
-                            <button onclick="addQuoteItem()" class="apple-btn flex-1 sm:flex-initial justify-center px-4 py-2 rounded-full bg-[#1D1D1F] hover:bg-[#323236] text-white font-semibold text-[12px] flex items-center gap-1.5 shadow-sm">
+                            <button type="button" onclick="addQuoteItem()" class="apple-btn px-3 py-1.5 rounded-lg bg-[#1D1D1F] hover:bg-[#323236] text-white font-semibold text-[11.5px] flex items-center gap-1">
                                 <i data-lucide="plus" class="w-3.5 h-3.5"></i> 품목 추가
                             </button>
                         </div>
                     </div>
 
-                    <div id="items-editor-list" class="space-y-3.5">
-                        <!-- 계층형 견적 카드들이 여기에 렌더링됩니다 -->
-                    </div>
+                    <div id="items-editor-list" class="space-y-3"></div>
                 </section>
 
-                <!-- 카드 4: 세금/할인 및 푸터 -->
-                <section class="apple-card p-4 sm:p-6 space-y-4">
-                    <div class="flex items-center justify-between gap-2">
-                        <div class="min-w-0">
-                            <h2 class="text-[16px] sm:text-[17px] font-bold tracking-tight text-[#1D1D1F]">세금 / 할인 & 하단 푸터</h2>
-                            <p class="text-[12px] text-[#86868B] mt-0.5">부가가치세, 할인 금액 및 계좌 안내를 입력합니다.</p>
+                <!-- 섹션 4: 세금/할인 및 하단 푸터 -->
+                <section class="apple-card p-4 sm:p-5 space-y-3.5">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-[15px] sm:text-[16px] font-bold text-[#1D1D1F]">4. 부가세 / 노트 / 하단 푸터</h2>
+                            <p class="text-[11.5px] text-[#86868B]">세금, 계좌 안내 및 하단 정보를 입력합니다.</p>
                         </div>
-                        <button onclick="addSummaryRow()" class="apple-btn text-[12px] font-semibold text-[#1D1D1F] bg-[#F5F5F7] hover:bg-[#E5E5EA] px-3 py-1.5 rounded-full flex items-center gap-1 shrink-0">
-                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> 항목 추가
+                        <button type="button" onclick="addSummaryRow()" class="apple-btn text-[11.5px] font-semibold text-[#1D1D1F] bg-[#F5F5F7] hover:bg-[#E5E5EA] px-2.5 py-1 rounded-lg flex items-center gap-1">
+                            <i data-lucide="plus" class="w-3 h-3"></i> 합계항목 추가
                         </button>
                     </div>
 
-                    <!-- 부가세/배송비 리스트 -->
                     <div id="extra-summary-container" class="space-y-2"></div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-black/[0.06]">
-                        <div class="sm:col-span-1 min-w-0">
-                            <label class="block text-[12px] font-semibold text-[#6E6E73] mb-1.5">노트 타이틀</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-black/[0.06]">
+                        <div>
+                            <label class="block text-[11.5px] font-semibold text-[#6E6E73] mb-1">노트 타이틀</label>
                             <input type="text" id="inp-notes-title" class="apple-input font-semibold" placeholder="NOTES">
                         </div>
-                        <div class="sm:col-span-2 min-w-0">
-                            <label class="block text-[12px] font-semibold text-[#6E6E73] mb-1.5">웹사이트 도메인</label>
+                        <div class="sm:col-span-2">
+                            <label class="block text-[11.5px] font-semibold text-[#6E6E73] mb-1">웹사이트 주소</label>
                             <input type="text" id="inp-website" class="apple-input" placeholder="www.studiomonolith.kr">
                         </div>
                     </div>
 
-                    <div class="min-w-0">
-                        <label class="block text-[12px] font-semibold text-[#6E6E73] mb-1.5">결제 안내 및 특이사항</label>
-                        <textarea id="inp-notes-content" rows="3" class="apple-input text-[13px] leading-relaxed resize-none"></textarea>
+                    <div>
+                        <label class="block text-[11.5px] font-semibold text-[#6E6E73] mb-1">결제 계좌 및 유의사항</label>
+                        <textarea id="inp-notes-content" rows="3" class="apple-input text-[12.5px] leading-relaxed resize-none"></textarea>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-3 border-t border-black/[0.06]">
-                        <div class="min-w-0">
-                            <label class="block text-[12px] font-semibold text-[#6E6E73] mb-1.5">하단 스튜디오 주소 / 연락처</label>
-                            <textarea id="inp-footer-address" rows="3" class="apple-input text-[13px] leading-relaxed resize-none"></textarea>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-black/[0.06]">
+                        <div>
+                            <label class="block text-[11.5px] font-semibold text-[#6E6E73] mb-1">하단 회사 주소/연락처</label>
+                            <textarea id="inp-footer-address" rows="3" class="apple-input text-[12.5px] leading-relaxed resize-none"></textarea>
                         </div>
-                        <div class="flex flex-col justify-between min-w-0">
+                        <div class="flex flex-col justify-between">
                             <div>
-                                <label class="block text-[12px] font-semibold text-[#6E6E73] mb-1.5">우측 하단 클로징 슬로건</label>
-                                <textarea id="inp-footer-ThankYou" rows="2" class="apple-input text-[13px] font-bold resize-none"></textarea>
+                                <label class="block text-[11.5px] font-semibold text-[#6E6E73] mb-1">하단 슬로건</label>
+                                <textarea id="inp-footer-ThankYou" rows="2" class="apple-input text-[12.5px] font-bold resize-none"></textarea>
                             </div>
-                            <label class="flex items-center gap-2.5 text-[13px] font-medium text-[#1D1D1F] cursor-pointer pt-3 select-none">
-                                <input type="checkbox" id="inp-show-socials" class="w-4 h-4 rounded border-zinc-300 text-[#1D1D1F] focus:ring-0">
-                                <span>하단 소셜 아이콘 바 표시</span>
+                            <label class="flex items-center gap-2 text-[12.5px] font-medium text-[#1D1D1F] cursor-pointer pt-2">
+                                <input type="checkbox" id="inp-show-socials" class="w-4 h-4 rounded border-zinc-300 text-[#1D1D1F]">
+                                <span>하단 소셜 아이콘 표시</span>
                             </label>
                         </div>
                     </div>
@@ -449,182 +419,84 @@
             </div>
         </aside>
 
-        <!-- 2. 우측 실시간 미리보기 캔버스 영역 (좌우 흔들림 없는 고정 스케일 스테이지) -->
-        <section id="preview-panel" class="hidden md:flex flex-1 bg-[#E5E5EA] scroll-lock-x p-3 sm:p-8 lg:p-10 pb-28 md:pb-14 flex-col items-center justify-start relative" style="background: radial-gradient(circle at 50% 20%, #EFEFF4 0%, #D1D1D6 100%);">
+        <!-- [우측] 실시간 A4 프리뷰 패널 (확대/축소 시 상하좌우 스크롤 완벽 작동) -->
+        <section id="preview-panel" class="hidden md:flex flex-1 h-full bg-[#E5E5EA] flex-col overflow-hidden relative" style="background: radial-gradient(circle at 50% 20%, #EFEFF4 0%, #D1D1D6 100%);">
             
-            <!-- Apple 스타일 플로팅 줌 컨트롤 -->
-            <div class="sticky top-0 z-20 mb-4 sm:mb-6 bg-white/90 backdrop-blur-xl border border-black/[0.08] text-[#1D1D1F] px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full flex items-center gap-2 sm:gap-2.5 text-[12px] font-semibold shadow-sm shrink-0">
-                <span class="text-[#86868B] hidden sm:inline">배율</span>
-                <div class="h-3 w-[1px] bg-black/10 hidden sm:block"></div>
-                <button onclick="adjustZoom(-0.1)" class="apple-btn hover:bg-black/5 p-1 rounded-full transition" title="축소">
-                    <i data-lucide="minus" class="w-3.5 h-3.5"></i>
-                </button>
-                <span id="zoom-label" class="font-mono text-[12px] min-w-[42px] text-center font-bold">100%</span>
-                <button onclick="adjustZoom(0.1)" class="apple-btn hover:bg-black/5 p-1 rounded-full transition" title="확대">
-                    <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                </button>
-                <button onclick="fitPaperToScreen()" class="apple-btn text-[11px] bg-black/[0.06] hover:bg-black/[0.12] px-2.5 py-1 rounded-full text-[#1D1D1F] ml-0.5 transition">화면 맞춤</button>
+            <!-- 상단 고정 줌 컨트롤 바 -->
+            <div class="w-full py-3 px-4 flex items-center justify-center shrink-0 z-20 pointer-events-none">
+                <div class="pointer-events-auto bg-white/95 backdrop-blur-xl border border-black/[0.08] text-[#1D1D1F] px-3.5 py-1.5 rounded-full flex items-center gap-2 text-[12px] font-semibold shadow-md">
+                    <span id="page-count-badge" class="px-2.5 py-0.5 rounded-full bg-[#1D1D1F] text-white text-[11px] font-bold">A4 · 1 Page</span>
+                    <div class="h-3 w-[1px] bg-black/15"></div>
+                    <button type="button" onclick="adjustZoom(-0.1)" class="apple-btn hover:bg-black/5 p-1 rounded-full" title="축소">
+                        <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <span id="zoom-label" class="font-mono text-[12px] min-w-[42px] text-center font-bold">100%</span>
+                    <button type="button" onclick="adjustZoom(0.1)" class="apple-btn hover:bg-black/5 p-1 rounded-full" title="확대">
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button type="button" onclick="resetZoom()" class="apple-btn text-[11px] bg-black/[0.05] hover:bg-black/[0.1] px-2 py-0.5 rounded-full">100%</button>
+                    <button type="button" onclick="fitPaperToScreen()" class="apple-btn text-[11px] bg-[#1D1D1F] text-white px-2.5 py-0.5 rounded-full">화면 맞춤</button>
+                </div>
             </div>
 
-            <!-- A4 비율 미니멀 견적서 종이 캔버스 (고정 740px 기준 + 오버플로우 클리핑으로 좌우 흔들림 0%) -->
-            <div id="paper-scale-stage" class="w-full flex justify-center items-start overflow-hidden">
-                <div id="paper-zoom-wrapper" class="origin-top shrink-0" style="width: 740px;">
-                    <div id="invoice-paper" class="paper-canvas w-[740px] min-h-[1046px] p-14 md:p-16 flex flex-col justify-between select-text">
-
-                        <!-- 상단 & 본문 -->
-                        <div class="relative z-10 organic-text">
-                            
-                            <!-- 1. TOP HEADER: 좌측 "hello." + 우측 회사 메타 정보 (html2canvas 캡처 시 절대 겹치지 않는 블록 분리 구조) -->
-                            <div class="flex flex-row justify-between items-start gap-8 mb-11">
-                                <div class="flex-1 min-w-0 preview-clickable p-1 -m-1" onclick="focusInput('inp-greeting')" title="클릭하여 타이틀 수정">
-                                    <div id="prev-greeting" class="hero-greeting text-[82px] text-[#141414]">
-                                        hello.
-                                    </div>
-                                    <div id="prev-subtitle" class="text-[12.5px] font-extrabold tracking-[0.04em] uppercase text-[#141414] pl-0.5 pt-2.5 leading-[1.35] organic-text">
-                                        THIS IS YOUR INVOICE
-                                    </div>
-                                </div>
-
-                                <div class="w-[42%] max-w-[270px] shrink-0 pt-1.5 text-[11px] leading-[1.68] text-[#141414] preview-clickable p-1 -m-1" onclick="focusInput('inp-company')" title="클릭하여 회사 정보 수정">
-                                    <div id="prev-company" class="font-extrabold text-[13.5px] mb-1.5 tracking-tight leading-[1.35] organic-text">
-                                        Acme Shoe Co.
-                                    </div>
-                                    <div id="prev-meta-list" class="space-y-1"></div>
-                                </div>
-                            </div>
-
-                            <!-- 2. CLIENT & PROJECT INFO -->
-                            <div class="grid grid-cols-2 gap-10 mb-9 text-[11.5px] leading-[1.68] text-[#1c1c1c]">
-                                <div class="min-w-0 preview-clickable p-1 -m-1" onclick="focusInput('inp-bill-lines')" title="클릭하여 클라이언트 수정">
-                                    <div id="prev-bill-title" class="font-extrabold uppercase tracking-wider text-[10.5px] mb-1.5 text-[#111] organic-text">
-                                        BILL TO
-                                    </div>
-                                    <div id="prev-bill-lines" class="whitespace-pre-wrap font-normal text-[#262626] organic-text"></div>
-                                </div>
-                                <div class="min-w-0 preview-clickable p-1 -m-1" onclick="focusInput('inp-ship-lines')" title="클릭하여 프로젝트 정보 수정">
-                                    <div id="prev-ship-title" class="font-extrabold uppercase tracking-wider text-[10.5px] mb-1.5 text-[#111] organic-text">
-                                        SHIP TO
-                                    </div>
-                                    <div id="prev-ship-lines" class="whitespace-pre-wrap font-normal text-[#262626] organic-text"></div>
-                                </div>
-                            </div>
-
-                            <!-- 3. ITEMS TABLE HEADER -->
-                            <div id="prev-table-header" class="border-t-[2px] border-[#181818] pt-3 pb-3 grid grid-cols-12 gap-2 text-[10px] font-extrabold uppercase tracking-wider text-[#141414]">
-                                <div class="col-span-6 pr-2">ITEM DESCRIPTION</div>
-                                <div class="col-span-1 text-center">QTY</div>
-                                <div class="col-span-2 text-right">PRICE</div>
-                                <div class="col-span-3 text-right">ITEM TOTAL</div>
-                            </div>
-
-                            <!-- 4. ITEMS LIST (계층형 지원) -->
-                            <div id="prev-items-container" class="divide-y divide-[#dcdcdc] border-b border-[#bdbdbd]"></div>
-
-                            <!-- 5. NOTES & TOTALS SUMMARY -->
-                            <div id="prev-notes-section" class="grid grid-cols-12 pt-5 pb-6 border-b-[2px] border-[#181818] gap-6">
-                                <div class="col-span-6 pr-2 min-w-0 preview-clickable p-1 -m-1" onclick="focusInput('inp-notes-content')" title="클릭하여 노트 수정">
-                                    <div id="prev-notes-title" class="text-[10px] font-extrabold uppercase tracking-wider text-[#141414] mb-1.5 organic-text">
-                                        NOTES
-                                    </div>
-                                    <div id="prev-notes-content" class="text-[11px] leading-[1.65] text-[#262626] whitespace-pre-wrap organic-text"></div>
-                                </div>
-
-                                <div class="col-span-6 flex flex-col justify-between text-[11.5px] min-w-0">
-                                    <div id="prev-summary-rows" class="divide-y divide-[#bdbdbd]"></div>
-                                </div>
-                            </div>
-
+            <!-- 실제 스크롤 컨테이너: 확대 시에도 문서 전체를 위아래/좌우로 스크롤하며 볼 수 있음 -->
+            <div id="preview-scroll-viewport" class="flex-1 w-full h-full overflow-auto px-4 sm:px-8 pt-2 pb-32">
+                <div id="paper-scroll-sizer" class="mx-auto relative flex justify-center">
+                    <div id="paper-zoom-wrapper" class="origin-top flex flex-col items-center gap-8" style="width: 740px;">
+                        <div id="pages-host" class="flex flex-col items-center gap-8">
+                            <!-- A4 페이지 시트들이 여기에 렌더링됩니다 -->
                         </div>
-
-                        <!-- 6. EDITORIAL FOOTER (SVG 기반 정밀 아이콘으로 다운로드 시 쏠림 현상 0%) -->
-                        <div class="relative z-10 pt-8 pb-2 mt-10 organic-text preview-clickable p-1 -m-1" onclick="focusInput('inp-footer-address')" title="클릭하여 푸터 수정">
-                            <div class="grid grid-cols-12 items-center gap-4 mb-5">
-                                <div id="prev-footer-address" class="col-span-6 text-right text-[10px] leading-[1.65] text-[#222] whitespace-pre-wrap pr-2 organic-text"></div>
-                                <div id="prev-footer-thankyou" class="col-span-6 text-left pl-2 text-[18px] font-black leading-[1.2] tracking-tight uppercase text-[#141414] whitespace-pre-wrap organic-text"></div>
-                            </div>
-
-                            <div class="text-center space-y-2">
-                                <div id="prev-website" class="text-[10.5px] font-extrabold tracking-tight text-[#141414] break-all">
-                                    www.acmeshoeco.com
-                                </div>
-                                <!-- 모든 원형 소셜 아이콘을 순수 SVG로 그려서 html2canvas에서도 텍스트 쏠림이 전혀 없도록 처리 -->
-                                <div id="prev-socials" class="flex items-center justify-center gap-2 pt-0.5">
-                                    <svg class="social-svg w-5 h-5" viewBox="0 0 24 24">
-                                        <circle class="social-bg" cx="12" cy="12" r="12" fill="#181818"/>
-                                        <path class="social-fg" fill="#f6f6f4" d="M13.4 17.5v-5h1.7l.25-2h-1.95V9.2c0-.58.16-.97 1-.97h1.05V6.45c-.18-.02-.8-.08-1.52-.08-1.5 0-2.53.92-2.53 2.6v1.53H9.7v2h1.7v5h2z"/>
-                                    </svg>
-                                    <svg class="social-svg w-5 h-5" viewBox="0 0 24 24">
-                                        <circle class="social-bg" cx="12" cy="12" r="12" fill="#181818"/>
-                                        <path class="social-fg" fill="#f6f6f4" d="M17.3 8.8c-.4.17-.82.29-1.26.35.45-.27.8-.7.96-1.21-.42.25-.9.43-1.4.53a2.2 2.2 0 00-3.8 1.5c0 .17.02.34.05.5-1.83-.09-3.45-.97-4.54-2.3-.19.33-.3.7-.3 1.11 0 .76.39 1.44.98 1.83-.36-.01-.7-.11-1-.27v.03c0 1.07.76 1.96 1.77 2.16-.18.05-.38.08-.58.08-.14 0-.28-.01-.41-.04.28.88 1.1 1.51 2.06 1.53a4.43 4.43 0 01-2.74.94c-.18 0-.35-.01-.53-.03.98.63 2.14 1 3.39 1 4.06 0 6.29-3.37 6.29-6.29 0-.1 0-.19-.01-.29.43-.31.8-.7 1.1-1.14z"/>
-                                    </svg>
-                                    <svg class="social-svg w-5 h-5" viewBox="0 0 24 24">
-                                        <circle class="social-bg" cx="12" cy="12" r="12" fill="#181818"/>
-                                        <path class="social-fg" fill="#f6f6f4" d="M8.2 7.5h4.1c1.6 0 2.6.8 2.6 2.1 0 .9-.5 1.5-1.2 1.8.9.2 1.5.9 1.5 2 0 1.5-1.1 2.4-2.8 2.4H8.2V7.5zm1.8 3.4h2c.7 0 1.1-.3 1.1-.9 0-.6-.4-.9-1.1-.9h-2v1.8zm0 3.4h2.2c.8 0 1.2-.4 1.2-1 0-.7-.5-1-1.2-1h-2.2v2z"/>
-                                    </svg>
-                                    <svg class="social-svg w-5 h-5" viewBox="0 0 24 24">
-                                        <circle class="social-bg" cx="12" cy="12" r="12" fill="#181818"/>
-                                        <rect x="7" y="7" width="10" height="10" rx="2.8" fill="none" class="social-stroke" stroke="#f6f6f4" stroke-width="1.5"/>
-                                        <circle cx="12" cy="12" r="2.2" fill="none" class="social-stroke" stroke="#f6f6f4" stroke-width="1.5"/>
-                                        <circle cx="14.9" cy="9.1" r="0.8" class="social-fg" fill="#f6f6f4"/>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 모바일 전용 Apple 스타일 하단 플로팅 스위처 바 (내용 입력 <-> 견적서 미리보기 즉시 전환) -->
-        <div class="md:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-40 bg-[#1D1D1F]/90 backdrop-blur-xl p-1.5 rounded-full shadow-2xl border border-white/15 flex items-center gap-1">
-            <button onclick="setViewMode('edit')" id="mob-edit-btn" class="apple-btn px-5 py-2.5 rounded-full text-[13px] font-bold flex items-center gap-2 bg-white text-[#1D1D1F] shadow-sm">
+        <!-- 모바일 하단 플로팅 모드 전환 버튼 -->
+        <div class="md:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-40 bg-[#1D1D1F]/95 backdrop-blur-xl p-1.5 rounded-full shadow-2xl border border-white/15 flex items-center gap-1">
+            <button type="button" onclick="setViewMode('edit')" id="mob-edit-btn" class="apple-btn px-5 py-2 rounded-full text-[13px] font-bold flex items-center gap-1.5 bg-white text-[#1D1D1F] shadow-sm">
                 <i data-lucide="pen-line" class="w-4 h-4"></i>
                 <span>내용 입력</span>
             </button>
-            <button onclick="setViewMode('preview')" id="mob-preview-btn" class="apple-btn px-5 py-2.5 rounded-full text-[13px] font-bold flex items-center gap-2 text-white/80 hover:text-white">
+            <button type="button" onclick="setViewMode('preview')" id="mob-preview-btn" class="apple-btn px-5 py-2 rounded-full text-[13px] font-bold flex items-center gap-1.5 text-white/80 hover:text-white">
                 <i data-lucide="eye" class="w-4 h-4"></i>
                 <span>견적서 보기</span>
             </button>
         </div>
     </main>
 
-    <!-- Apple 스타일 미니멀 토스트 알림 -->
-    <div id="toast-notification" class="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-[#1D1D1F]/95 backdrop-blur-md text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-[13px] font-medium">
+    <!-- 토스트 알림 -->
+    <div id="toast-notification" class="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-[#1D1D1F]/95 backdrop-blur-md text-white px-4 py-2.5 rounded-2xl shadow-2xl flex items-center gap-2.5 text-[12.5px] font-medium">
         <span class="w-2 h-2 rounded-full bg-[#30D158]"></span>
         <span id="toast-message">저장되었습니다.</span>
     </div>
 
     <script>
-        // 미니멀 그래픽 썸네일 아이콘
+        // 그래픽 아이콘 프리셋
         const GRAPHIC_THUMBNAILS = {
-            none: {
-                label: '아이콘 없음 (텍스트 중심)',
-                svg: ``
-            },
+            none: { label: '아이콘 없음 (텍스트만)', svg: '' },
             branding: {
                 label: '브랜딩 (BI/CI)',
-                svg: `<svg viewBox="0 0 80 60" class="w-12 h-10"><rect x="10" y="10" width="34" height="34" fill="currentColor"/><circle cx="48" cy="32" r="15" fill="none" stroke="currentColor" stroke-width="3.5"/><circle cx="48" cy="32" r="4" fill="currentColor"/></svg>`
+                svg: `<svg viewBox="0 0 80 60" width="44" height="34" style="display:block;"><rect x="10" y="10" width="34" height="34" fill="currentColor"/><circle cx="48" cy="32" r="15" fill="none" stroke="currentColor" stroke-width="3.5"/><circle cx="48" cy="32" r="4" fill="currentColor"/></svg>`
             },
             editorial: {
                 label: '인쇄 / 편집 디자인',
-                svg: `<svg viewBox="0 0 80 60" class="w-12 h-10"><path d="M16 14 L40 8 L64 14 L64 48 L40 42 L16 48 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><line x1="40" y1="8" x2="40" y2="42" stroke="currentColor" stroke-width="2.5"/><rect x="22" y="20" width="12" height="14" fill="currentColor"/></svg>`
+                svg: `<svg viewBox="0 0 80 60" width="44" height="34" style="display:block;"><path d="M16 14 L40 8 L64 14 L64 48 L40 42 L16 48 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><line x1="40" y1="8" x2="40" y2="42" stroke="currentColor" stroke-width="2.5"/><rect x="22" y="20" width="12" height="14" fill="currentColor"/></svg>`
             },
             web: {
                 label: '웹 / UI·UX',
-                svg: `<svg viewBox="0 0 80 60" class="w-12 h-10"><rect x="8" y="10" width="64" height="42" rx="3" fill="none" stroke="currentColor" stroke-width="3"/><line x1="8" y1="20" x2="72" y2="20" stroke="currentColor" stroke-width="2.5"/><rect x="15" y="26" width="22" height="19" fill="currentColor"/><line x1="43" y1="28" x2="64" y2="28" stroke="currentColor" stroke-width="2.5"/><line x1="43" y1="35" x2="58" y2="35" stroke="currentColor" stroke-width="2.5"/></svg>`
+                svg: `<svg viewBox="0 0 80 60" width="44" height="34" style="display:block;"><rect x="8" y="10" width="64" height="42" rx="3" fill="none" stroke="currentColor" stroke-width="3"/><line x1="8" y1="20" x2="72" y2="20" stroke="currentColor" stroke-width="2.5"/><rect x="15" y="26" width="22" height="19" fill="currentColor"/><line x1="43" y1="28" x2="64" y2="28" stroke="currentColor" stroke-width="2.5"/><line x1="43" y1="35" x2="58" y2="35" stroke="currentColor" stroke-width="2.5"/></svg>`
             },
             motion: {
                 label: '3D / 모션 그래픽',
-                svg: `<svg viewBox="0 0 80 60" class="w-12 h-10"><polygon points="40,8 66,22 66,46 40,56 14,46 14,22" fill="none" stroke="currentColor" stroke-width="3"/><polygon points="40,34 66,22 66,46 40,56" fill="currentColor"/></svg>`
+                svg: `<svg viewBox="0 0 80 60" width="44" height="34" style="display:block;"><polygon points="40,8 66,22 66,46 40,56 14,46 14,22" fill="none" stroke="currentColor" stroke-width="3"/><polygon points="40,34 66,22 66,46 40,56" fill="currentColor"/></svg>`
             },
             sneaker: {
                 label: '스니커즈 (레퍼런스)',
-                svg: `<svg viewBox="0 0 120 70" class="w-14 h-10"><path d="M16 54 C16 38, 22 22, 26 14 C32 14, 42 18, 46 24 C56 32, 78 40, 102 44 C108 45, 110 50, 108 55 L14 55 Z" fill="currentColor"/><path d="M13 55 L109 55 C111 55, 111 61, 107 61 L15 61 C12 61, 11 55, 13 55 Z" fill="#ffffff" stroke="currentColor" stroke-width="1.5"/></svg>`
+                svg: `<svg viewBox="0 0 120 70" width="52" height="34" style="display:block;"><path d="M16 54 C16 38, 22 22, 26 14 C32 14, 42 18, 46 24 C56 32, 78 40, 102 44 C108 45, 110 50, 108 55 L14 55 Z" fill="currentColor"/><path d="M13 55 L109 55 C111 55, 111 61, 107 61 L15 61 C12 61, 11 55, 13 55 Z" fill="#ffffff" stroke="currentColor" stroke-width="1.5"/></svg>`
             }
         };
 
-        // 한국 디자인 스튜디오 프리셋 (대분류 ➔ 품목 ➔ 세부품목 구조 예시 포함)
+        // 한국어 디자인 스튜디오 기본 데이터
         const PRESET_KR = {
             greeting: "hello.",
             subtitle: "THIS IS YOUR DESIGN QUOTATION",
@@ -636,7 +508,7 @@
             borderColor: "#181818",
             meta: [
                 { label: "QUOTE NO.", value: "#SM-2026-084" },
-                { label: "DATE", value: "03 Nov 2026" },
+                { label: "DATE", value: "04 Nov 2026" },
                 { label: "VALIDITY", value: "발행일로부터 30일" },
                 { label: "TERMS", value: "선금 50% / 잔금 50%" }
             ],
@@ -660,8 +532,8 @@
                     originalPrice: 3200000,
                     price: 2800000,
                     subItems: [
-                        { title: "메인 키비주얼 포스터 디자인 (A1 / 국전지 사이즈 2종 변형)", qty: "2종", price: 1500000 },
-                        { title: "3단 접지 리플렛 & 브로슈어 디자인 (국배판 6P 구성)", qty: "1식", price: 1300000 }
+                        { title: "메인 키비주얼 포스터 디자인 (A1 / 국전지 2종 변형)", qty: "2종", price: 1500000 },
+                        { title: "3단 접지 리플렛 & 브로슈어 디자인 (6P 구성)", qty: "1식", price: 1300000 }
                     ]
                 },
                 {
@@ -695,7 +567,7 @@
             showSocials: true
         };
 
-        // 레퍼런스 원본 프리셋
+        // 영문 레퍼런스 원본 데이터
         const PRESET_EN = {
             greeting: "hello.",
             subtitle: "THIS IS YOUR INVOICE",
@@ -744,7 +616,21 @@
         let currentZoom = 1;
         let currentViewMode = 'split';
 
-        // 화면 보기 모드 전환 (데스크톱 분할/단독 및 모바일 탭 전환 통합)
+        function escapeHtml(str) {
+            if (typeof str !== 'string') return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+
+        function formatMoney(amount) {
+            const num = Number(amount) || 0;
+            if (state.currency === 'KRW') {
+                return '₩' + Math.round(num).toLocaleString('ko-KR');
+            }
+            const sym = state.currency === 'EUR' ? '€' : '$';
+            return sym + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // 화면 보기 모드 전환
         function setViewMode(mode) {
             currentViewMode = mode;
             const editor = document.getElementById('editor-panel');
@@ -762,31 +648,31 @@
             });
 
             if (mode === 'split') {
-                editor.className = "w-full md:w-[460px] lg:w-[540px] xl:w-[600px] bg-[#F5F5F7] border-r border-black/[0.06] flex flex-col h-full overflow-y-auto shrink-0 z-20 transition-all duration-300";
-                preview.className = "hidden md:flex flex-1 bg-[#E5E5EA] overflow-y-auto overflow-x-hidden p-3 sm:p-8 lg:p-12 pb-28 md:pb-14 flex-col items-center justify-start relative transition-all duration-300";
-                btnSplit.classList.replace('inactive', 'active');
-                setTimeout(fitPaperToScreen, 50);
+                editor.className = "w-full md:w-[440px] lg:w-[500px] xl:w-[540px] bg-[#F5F5F7] border-r border-black/[0.08] flex flex-col h-full scroll-lock-x shrink-0 z-20";
+                preview.className = "hidden md:flex flex-1 h-full bg-[#E5E5EA] flex-col overflow-hidden relative";
+                if (btnSplit) btnSplit.classList.replace('inactive', 'active');
+                setTimeout(fitPaperToScreen, 40);
             } else if (mode === 'edit') {
-                editor.className = "w-full bg-[#F5F5F7] flex flex-col h-full overflow-y-auto shrink-0 z-20 transition-all duration-300";
+                editor.className = "w-full bg-[#F5F5F7] flex flex-col h-full scroll-lock-x shrink-0 z-20";
                 preview.className = "hidden";
-                btnEdit.classList.replace('inactive', 'active');
+                if (btnEdit) btnEdit.classList.replace('inactive', 'active');
                 if (mobEdit && mobPreview) {
-                    mobEdit.className = "apple-btn px-5 py-2.5 rounded-full text-[13px] font-bold flex items-center gap-2 bg-white text-[#1D1D1F] shadow-sm";
-                    mobPreview.className = "apple-btn px-5 py-2.5 rounded-full text-[13px] font-bold flex items-center gap-2 text-white/80 hover:text-white";
+                    mobEdit.className = "apple-btn px-5 py-2 rounded-full text-[13px] font-bold flex items-center gap-1.5 bg-white text-[#1D1D1F] shadow-sm";
+                    mobPreview.className = "apple-btn px-5 py-2 rounded-full text-[13px] font-bold flex items-center gap-1.5 text-white/80 hover:text-white";
                 }
             } else if (mode === 'preview') {
                 editor.className = "hidden";
-                preview.className = "w-full flex-1 bg-[#E5E5EA] overflow-y-auto overflow-x-hidden p-3 sm:p-8 lg:p-12 pb-28 md:pb-14 flex flex-col items-center justify-start relative transition-all duration-300";
-                btnPreview.classList.replace('inactive', 'active');
+                preview.className = "w-full flex-1 h-full bg-[#E5E5EA] flex flex-col overflow-hidden relative";
+                if (btnPreview) btnPreview.classList.replace('inactive', 'active');
                 if (mobEdit && mobPreview) {
-                    mobPreview.className = "apple-btn px-5 py-2.5 rounded-full text-[13px] font-bold flex items-center gap-2 bg-white text-[#1D1D1F] shadow-sm";
-                    mobEdit.className = "apple-btn px-5 py-2.5 rounded-full text-[13px] font-bold flex items-center gap-2 text-white/80 hover:text-white";
+                    mobPreview.className = "apple-btn px-5 py-2 rounded-full text-[13px] font-bold flex items-center gap-1.5 bg-white text-[#1D1D1F] shadow-sm";
+                    mobEdit.className = "apple-btn px-5 py-2 rounded-full text-[13px] font-bold flex items-center gap-1.5 text-white/80 hover:text-white";
                 }
-                setTimeout(fitPaperToScreen, 50);
+                setTimeout(fitPaperToScreen, 40);
             }
         }
 
-        // 미리보기 클릭 시 해당 입력칸 포커스 (모바일에서도 즉시 에디터로 전환 후 포커스)
+        // 미리보기 클릭 시 입력칸 포커스 이동
         function focusInput(inputId) {
             const editor = document.getElementById('editor-panel');
             if (editor.classList.contains('hidden')) {
@@ -797,13 +683,13 @@
                 setTimeout(() => {
                     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     el.focus();
-                }, 220);
+                }, 180);
             }
         }
 
-        // 미리보기 확대/축소 및 모바일 화면 폭 자동 맞춤(Auto-Fit)
+        // 확대/축소 및 스크롤 영역 동기화 (확대 시에도 문서 하단까지 완벽하게 스크롤 가능)
         function adjustZoom(delta) {
-            currentZoom = Math.min(1.3, Math.max(0.35, +(currentZoom + delta).toFixed(2)));
+            currentZoom = Math.min(1.6, Math.max(0.35, +(currentZoom + delta).toFixed(2)));
             applyZoom();
         }
         function resetZoom() {
@@ -811,12 +697,12 @@
             applyZoom();
         }
         function fitPaperToScreen() {
-            const previewPanel = document.getElementById('preview-panel');
-            if (!previewPanel || previewPanel.classList.contains('hidden')) return;
-            const availableWidth = previewPanel.clientWidth - (window.innerWidth < 640 ? 24 : 64);
+            const viewport = document.getElementById('preview-scroll-viewport');
+            if (!viewport || viewport.offsetParent === null) return;
+            const availableWidth = viewport.clientWidth - (window.innerWidth < 640 ? 28 : 64);
             const paperBaseWidth = 740;
             if (availableWidth < paperBaseWidth) {
-                currentZoom = Math.max(0.38, +(availableWidth / paperBaseWidth).toFixed(3));
+                currentZoom = Math.max(0.38, +(availableWidth / paperBaseWidth).toFixed(2));
             } else {
                 currentZoom = 1;
             }
@@ -824,27 +710,23 @@
         }
         function applyZoom() {
             const wrapper = document.getElementById('paper-zoom-wrapper');
-            const stage = document.getElementById('paper-scale-stage');
-            const paper = document.getElementById('invoice-paper');
+            const sizer = document.getElementById('paper-scroll-sizer');
+            const host = document.getElementById('pages-host');
+            if (!wrapper || !sizer || !host) return;
+
             wrapper.style.transform = `scale(${currentZoom})`;
             document.getElementById('zoom-label').textContent = `${Math.round(currentZoom * 100)}%`;
-            // 축소 시 하단 불필요한 여백 제거
-            if (stage && paper) {
-                stage.style.height = `${Math.ceil(paper.offsetHeight * currentZoom) + 24}px`;
-            }
+
+            // 실제 콘텐츠 높이에 스케일 비율을 곱해 스크롤 컨테이너 높이를 정확히 확보
+            const rawHeight = host.offsetHeight || 1046;
+            const scaledHeight = Math.ceil(rawHeight * currentZoom);
+            const scaledWidth = Math.ceil(740 * currentZoom);
+
+            sizer.style.height = `${scaledHeight + 40}px`;
+            sizer.style.width = `${Math.max(scaledWidth, 300)}px`;
         }
 
-        // 통화 포맷터
-        function formatMoney(amount) {
-            const num = Number(amount) || 0;
-            if (state.currency === 'KRW') {
-                return '₩' + Math.round(num).toLocaleString('ko-KR');
-            }
-            const sym = state.currency === 'EUR' ? '€' : '$';
-            return sym + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
-
-        // 프리셋 전환
+        // 양식 프리셋 적용
         function applyPreset(type) {
             state = JSON.parse(JSON.stringify(type === 'en' ? PRESET_EN : PRESET_KR));
             const krBtn = document.getElementById('preset-kr-btn');
@@ -860,7 +742,7 @@
 
             syncInputsFromState();
             renderPreview();
-            showToast(type === 'kr' ? '한국어 디자인 스튜디오 양식이 적용되었습니다.' : '영문 레퍼런스 원본 양식이 적용되었습니다.');
+            showToast(type === 'kr' ? '한국어 디자인 견적서 양식이 적용되었습니다.' : '영문 레퍼런스 원본 양식이 적용되었습니다.');
         }
 
         function resetColors() {
@@ -873,19 +755,19 @@
             showToast('기본 컬러 테마로 복원되었습니다.');
         }
 
-        // 1. 메타 필드 에디터 렌더링 (모바일 및 좁은 화면에서도 카드 밖으로 절대 튀어나가지 않도록 그리드 비율 적용)
+        // 1. 메타 항목 에디터
         function renderMetaEditor() {
             const container = document.getElementById('meta-fields-container');
             container.innerHTML = state.meta.map((m, idx) => `
                 <div class="grid grid-cols-12 items-center gap-2">
-                    <div class="col-span-4 min-w-0">
-                        <input type="text" value="${escapeHtml(m.label)}" oninput="updateMeta(${idx}, 'label', this.value)" class="apple-input !py-2 !px-2.5 font-bold text-[12px]" placeholder="항목명">
+                    <div class="col-span-4">
+                        <input type="text" value="${escapeHtml(m.label)}" oninput="updateMeta(${idx}, 'label', this.value)" class="apple-input !py-1.5 !px-2.5 font-bold text-[12px]" placeholder="항목명">
                     </div>
-                    <div class="col-span-7 min-w-0">
-                        <input type="text" value="${escapeHtml(m.value)}" oninput="updateMeta(${idx}, 'value', this.value)" class="apple-input !py-2 !px-2.5 text-[13px]" placeholder="내용">
+                    <div class="col-span-7">
+                        <input type="text" value="${escapeHtml(m.value)}" oninput="updateMeta(${idx}, 'value', this.value)" class="apple-input !py-1.5 !px-2.5 text-[12.5px]" placeholder="내용">
                     </div>
                     <div class="col-span-1 flex justify-end">
-                        <button onclick="removeMetaField(${idx})" class="apple-btn p-1.5 text-[#86868B] hover:text-red-500 rounded-lg transition" title="삭제">
+                        <button type="button" onclick="removeMetaField(${idx})" class="p-1 text-[#86868B] hover:text-red-500">
                             <i data-lucide="x" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -893,13 +775,12 @@
             `).join('');
             lucide.createIcons();
         }
-
         function updateMeta(idx, key, val) {
             state.meta[idx][key] = val;
             renderPreview();
         }
         function addMetaField() {
-            state.meta.push({ label: "NEW INFO", value: "내용 입력" });
+            state.meta.push({ label: "INFO", value: "내용 입력" });
             renderMetaEditor();
             renderPreview();
         }
@@ -909,111 +790,105 @@
             renderPreview();
         }
 
-        // 2. 계층형 견적 품목(대분류 + 품목 + 하위 세부품목) 에디터 렌더링
+        // 2. 품목 에디터 (대분류 + 메인품목 + 세부품목)
         function renderItemsEditor() {
             const container = document.getElementById('items-editor-list');
             container.innerHTML = state.items.map((item, idx) => {
-                // (A) 상위 대분류 섹션 헤더 카드인 경우
                 if (item.type === 'category') {
                     return `
-                        <div class="bg-[#1D1D1F] text-white rounded-2xl p-3.5 sm:p-4 flex flex-wrap sm:flex-nowrap items-center gap-2.5 shadow-sm">
-                            <span class="px-2 py-1 rounded-md bg-white/15 text-[11px] font-bold tracking-wider uppercase shrink-0">대분류</span>
-                            <input type="text" value="${escapeHtml(item.categoryCode || '')}" oninput="updateItem(${idx}, 'categoryCode', this.value)" class="w-12 bg-white/10 hover:bg-white/15 focus:bg-white/20 rounded-lg px-2 py-1.5 text-[13px] font-bold text-center text-white focus:outline-none shrink-0" placeholder="01">
-                            <input type="text" value="${escapeHtml(item.title)}" oninput="updateItem(${idx}, 'title', this.value)" class="flex-1 min-w-[140px] bg-white/10 hover:bg-white/15 focus:bg-white/20 rounded-lg px-3 py-1.5 text-[13px] sm:text-[14px] font-bold text-white focus:outline-none" placeholder="대분류 카테고리명 (예: 인쇄 디자인)">
-                            <div class="flex items-center gap-0.5 ml-auto shrink-0">
-                                <button onclick="moveItem(${idx}, -1)" class="p-1.5 text-white/60 hover:text-white transition" title="위로 이동"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
-                                <button onclick="moveItem(${idx}, 1)" class="p-1.5 text-white/60 hover:text-white transition" title="아래로 이동"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
-                                <button onclick="removeQuoteItem(${idx})" class="p-1.5 text-white/60 hover:text-red-400 transition" title="삭제"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        <div class="bg-[#1D1D1F] text-white rounded-xl p-3 flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-white/15 text-[10.5px] font-bold shrink-0">대분류</span>
+                            <input type="text" value="${escapeHtml(item.categoryCode || '')}" oninput="updateItem(${idx}, 'categoryCode', this.value)" class="w-11 bg-white/10 rounded px-2 py-1 text-[12px] font-bold text-center text-white focus:outline-none shrink-0" placeholder="01">
+                            <input type="text" value="${escapeHtml(item.title)}" oninput="updateItem(${idx}, 'title', this.value)" class="flex-1 min-w-0 bg-white/10 rounded px-2.5 py-1 text-[12.5px] font-bold text-white focus:outline-none" placeholder="대분류명 입력">
+                            <div class="flex items-center shrink-0">
+                                <button type="button" onclick="moveItem(${idx}, -1)" class="p-1 text-white/60 hover:text-white"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+                                <button type="button" onclick="moveItem(${idx}, 1)" class="p-1 text-white/60 hover:text-white"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                                <button type="button" onclick="removeQuoteItem(${idx})" class="p-1 text-white/60 hover:text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                             </div>
                         </div>
                     `;
                 }
 
-                // (B) 일반 품목 + 하위 세부 품목(Sub-items) 트리 카드인 경우
                 const subItems = item.subItems || [];
                 const graphicOptions = Object.entries(GRAPHIC_THUMBNAILS).map(([k, v]) =>
                     `<option value="${k}" ${item.graphic === k ? 'selected' : ''}>${v.label}</option>`
                 ).join('');
 
                 const subItemsHtml = subItems.map((sub, sIdx) => `
-                    <div class="grid grid-cols-12 items-center gap-1.5 pl-3 py-1 relative before:content-[''] before:absolute before:left-0 before:top-1/2 before:w-2 before:h-[1.5px] before:bg-[#D1D1D6]">
-                        <div class="col-span-12 sm:col-span-6 min-w-0">
-                            <input type="text" value="${escapeHtml(sub.title)}" oninput="updateSubItem(${idx}, ${sIdx}, 'title', this.value)" class="apple-input !bg-white !py-1.5 !px-2.5 text-[12.5px]" placeholder="세부 품목명">
+                    <div class="grid grid-cols-12 items-center gap-1.5 pl-2.5 py-1">
+                        <div class="col-span-12 sm:col-span-6">
+                            <input type="text" value="${escapeHtml(sub.title)}" oninput="updateSubItem(${idx}, ${sIdx}, 'title', this.value)" class="apple-input !bg-white !py-1.5 !px-2.5 text-[12px]" placeholder="세부 품목명">
                         </div>
-                        <div class="col-span-4 sm:col-span-2 min-w-0">
-                            <input type="text" value="${escapeHtml(sub.qty || '')}" oninput="updateSubItem(${idx}, ${sIdx}, 'qty', this.value)" class="apple-input !bg-white !py-1.5 !px-2 text-center text-[12px]" placeholder="규격/수량">
+                        <div class="col-span-4 sm:col-span-2">
+                            <input type="text" value="${escapeHtml(sub.qty || '')}" oninput="updateSubItem(${idx}, ${sIdx}, 'qty', this.value)" class="apple-input !bg-white !py-1.5 !px-2 text-center text-[11.5px]" placeholder="수량/규격">
                         </div>
-                        <div class="col-span-6 sm:col-span-3 min-w-0">
-                            <input type="number" value="${sub.price || ''}" oninput="updateSubItem(${idx}, ${sIdx}, 'price', this.value)" class="apple-input !bg-white !py-1.5 !px-2.5 text-right text-[12px] font-mono" placeholder="세부단가">
+                        <div class="col-span-6 sm:col-span-3">
+                            <input type="number" value="${sub.price || ''}" oninput="updateSubItem(${idx}, ${sIdx}, 'price', this.value)" class="apple-input !bg-white !py-1.5 !px-2 text-right text-[11.5px] font-mono" placeholder="세부단가">
                         </div>
                         <div class="col-span-2 sm:col-span-1 flex justify-end">
-                            <button onclick="removeSubItem(${idx}, ${sIdx})" class="p-1 text-[#86868B] hover:text-red-500 transition shrink-0" title="세부 품목 삭제">
-                                <i data-lucide="x" class="w-4 h-4"></i>
+                            <button type="button" onclick="removeSubItem(${idx}, ${sIdx})" class="p-1 text-[#86868B] hover:text-red-500">
+                                <i data-lucide="x" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
                     </div>
                 `).join('');
 
                 return `
-                    <div class="bg-[#F5F5F7] rounded-2xl p-3.5 sm:p-5 space-y-3.5 border border-black/[0.05] overflow-hidden">
-                        <!-- 상단 컨트롤 헤더 -->
+                    <div class="bg-[#F5F5F7] rounded-2xl p-3.5 space-y-3 border border-black/[0.06]">
                         <div class="flex flex-wrap items-center justify-between gap-2">
-                            <div class="flex flex-wrap items-center gap-1.5 min-w-0">
-                                <span class="w-6 h-6 rounded-full bg-[#1D1D1F] text-white text-[11px] font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
-                                <select onchange="updateItem(${idx}, 'graphic', this.value)" class="bg-white border border-black/[0.08] rounded-lg px-2.5 py-1.5 text-[12px] font-semibold text-[#1D1D1F] focus:outline-none max-w-[150px] sm:max-w-[180px] truncate">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <span class="w-5 h-5 rounded-full bg-[#1D1D1F] text-white text-[10.5px] font-bold flex items-center justify-center">${idx + 1}</span>
+                                <select onchange="updateItem(${idx}, 'graphic', this.value)" class="bg-white border border-black/[0.08] rounded-lg px-2 py-1 text-[11.5px] font-semibold text-[#1D1D1F] focus:outline-none">
                                     ${graphicOptions}
                                 </select>
-                                <label class="apple-btn cursor-pointer bg-white border border-black/[0.08] hover:bg-zinc-50 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-[#1D1D1F] flex items-center gap-1">
+                                <label class="apple-btn cursor-pointer bg-white border border-black/[0.08] hover:bg-zinc-50 px-2 py-1 rounded-lg text-[11px] font-semibold text-[#1D1D1F] flex items-center gap-1">
                                     <i data-lucide="upload" class="w-3 h-3"></i>
-                                    <span>로고/시안</span>
+                                    <span>이미지</span>
                                     <input type="file" accept="image/*" class="hidden" onchange="uploadItemImage(${idx}, this)">
                                 </label>
-                                ${item.customImage ? `<button onclick="clearItemImage(${idx})" class="text-[11px] text-red-500 font-medium underline px-1">제거</button>` : ''}
+                                ${item.customImage ? `<button type="button" onclick="clearItemImage(${idx})" class="text-[11px] text-red-500 underline">제거</button>` : ''}
                             </div>
-                            <div class="flex items-center gap-0.5 ml-auto shrink-0">
-                                <button onclick="moveItem(${idx}, -1)" class="p-1.5 text-[#86868B] hover:text-[#1D1D1F] transition" title="위로"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
-                                <button onclick="moveItem(${idx}, 1)" class="p-1.5 text-[#86868B] hover:text-[#1D1D1F] transition" title="아래로"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
-                                <button onclick="removeQuoteItem(${idx})" class="p-1.5 text-[#86868B] hover:text-red-500 transition" title="품목 삭제"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            <div class="flex items-center">
+                                <button type="button" onclick="moveItem(${idx}, -1)" class="p-1 text-[#86868B] hover:text-[#1D1D1F]"><i data-lucide="chevron-up" class="w-4 h-4"></i></button>
+                                <button type="button" onclick="moveItem(${idx}, 1)" class="p-1 text-[#86868B] hover:text-[#1D1D1F]"><i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                                <button type="button" onclick="removeQuoteItem(${idx})" class="p-1 text-[#86868B] hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                             </div>
                         </div>
 
-                        <!-- 메인 품목명 & 설명 -->
                         <div class="space-y-2">
-                            <input type="text" value="${escapeHtml(item.title)}" oninput="updateItem(${idx}, 'title', this.value)" class="apple-input !bg-white font-bold text-[14px]" placeholder="상위 품목명 (예: 인쇄 그래픽 패키지)">
-                            <input type="text" value="${escapeHtml(item.code)}" oninput="updateItem(${idx}, 'code', this.value)" class="apple-input !bg-white text-[13px] text-[#6E6E73]" placeholder="품목 요약 설명 또는 스펙 코드">
+                            <input type="text" value="${escapeHtml(item.title)}" oninput="updateItem(${idx}, 'title', this.value)" class="apple-input !bg-white font-bold text-[13.5px]" placeholder="품목명 입력">
+                            <input type="text" value="${escapeHtml(item.code)}" oninput="updateItem(${idx}, 'code', this.value)" class="apple-input !bg-white text-[12px] text-[#6E6E73]" placeholder="세부 설명 입력">
                         </div>
 
-                        <!-- 수량 / 정가(취소선) / 공급 단가 -->
-                        <div class="grid grid-cols-12 gap-2.5">
-                            <div class="col-span-4 sm:col-span-3 min-w-0">
-                                <label class="block text-[11px] font-semibold text-[#86868B] mb-1">수량 (QTY)</label>
+                        <div class="grid grid-cols-12 gap-2">
+                            <div class="col-span-3">
+                                <label class="block text-[10.5px] font-semibold text-[#86868B] mb-1">수량</label>
                                 <input type="number" value="${item.qty}" oninput="updateItem(${idx}, 'qty', this.value)" class="apple-input !bg-white text-center font-semibold">
                             </div>
-                            <div class="col-span-8 sm:col-span-4 min-w-0">
-                                <label class="block text-[11px] font-semibold text-[#86868B] mb-1">정가 (취소선 표시)</label>
-                                <input type="number" value="${item.originalPrice || ''}" oninput="updateItem(${idx}, 'originalPrice', this.value)" class="apple-input !bg-white text-right font-mono text-[13px]" placeholder="0">
+                            <div class="col-span-4">
+                                <label class="block text-[10.5px] font-semibold text-[#86868B] mb-1">정가(할인전)</label>
+                                <input type="number" value="${item.originalPrice || ''}" oninput="updateItem(${idx}, 'originalPrice', this.value)" class="apple-input !bg-white text-right font-mono text-[12px]" placeholder="0">
                             </div>
-                            <div class="col-span-12 sm:col-span-5 min-w-0">
-                                <label class="block text-[11px] font-semibold text-[#1D1D1F] mb-1">견적 단가 (PRICE)</label>
-                                <input type="number" value="${item.price}" oninput="updateItem(${idx}, 'price', this.value)" class="apple-input !bg-white text-right font-mono font-bold text-[14px]">
+                            <div class="col-span-5">
+                                <label class="block text-[10.5px] font-semibold text-[#1D1D1F] mb-1">공급 단가</label>
+                                <input type="number" value="${item.price}" oninput="updateItem(${idx}, 'price', this.value)" class="apple-input !bg-white text-right font-mono font-bold text-[13px]">
                             </div>
                         </div>
 
-                        <!-- 계층형 하위 세부 품목 (Sub-items) 트리 영역 -->
-                        <div class="pt-2.5 border-t border-black/[0.06] space-y-2.5">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="text-[12px] font-bold text-[#6E6E73] flex items-center gap-1.5">
-                                    <i data-lucide="corner-down-right" class="w-3.5 h-3.5 shrink-0"></i>
-                                    <span>하위 세부 품목 (${subItems.length}건)</span>
+                        <div class="pt-2 border-t border-black/[0.06] space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11.5px] font-bold text-[#6E6E73] flex items-center gap-1">
+                                    <i data-lucide="corner-down-right" class="w-3.5 h-3.5"></i>
+                                    <span>세부 하위 품목 (${subItems.length})</span>
                                 </span>
-                                <div class="flex items-center gap-2 ml-auto">
-                                    ${subItems.length > 0 ? `<button onclick="sumSubItemsToParent(${idx})" class="text-[11px] font-semibold text-[#1D1D1F] bg-black/[0.05] hover:bg-black/[0.1] px-2.5 py-1 rounded-lg transition">합산 반영</button>` : ''}
-                                    <button onclick="addSubItem(${idx})" class="apple-btn px-2.5 py-1 rounded-lg bg-white border border-black/[0.08] hover:bg-zinc-100 text-[11px] font-semibold text-[#1D1D1F] flex items-center gap-1">
+                                <div class="flex items-center gap-1.5">
+                                    ${subItems.length > 0 ? `<button type="button" onclick="sumSubItemsToParent(${idx})" class="text-[11px] font-semibold text-[#1D1D1F] bg-black/[0.06] hover:bg-black/[0.12] px-2 py-1 rounded-md">단가 합산</button>` : ''}
+                                    <button type="button" onclick="addSubItem(${idx})" class="apple-btn px-2 py-1 rounded-md bg-white border border-black/[0.08] text-[11px] font-semibold text-[#1D1D1F] flex items-center gap-1">
                                         <i data-lucide="plus" class="w-3 h-3"></i> 세부 추가
                                     </button>
                                 </div>
                             </div>
-                            ${subItems.length > 0 ? `<div class="space-y-2 border-l-2 border-[#D1D1D6] ml-1.5 py-1">${subItemsHtml}</div>` : ''}
+                            ${subItems.length > 0 ? `<div class="space-y-1.5 border-l-2 border-[#D1D1D6] ml-1">${subItemsHtml}</div>` : ''}
                         </div>
                     </div>
                 `;
@@ -1021,7 +896,6 @@
             lucide.createIcons();
         }
 
-        // 품목 및 하위 품목 조작 함수들
         function updateItem(idx, key, val) {
             if (key === 'qty' || key === 'price' || key === 'originalPrice') {
                 state.items[idx][key] = val === '' ? 0 : Number(val);
@@ -1030,42 +904,38 @@
             }
             renderPreview();
         }
-
         function addCategoryHeader() {
             state.items.push({
                 type: "category",
                 categoryCode: "0" + (state.items.filter(i => i.type === 'category').length + 1),
-                title: "NEW CATEGORY (새 대분류 카테고리)"
+                title: "NEW CATEGORY (새 대분류)"
             });
             renderItemsEditor();
             renderPreview();
         }
-
         function addQuoteItem() {
             state.items.push({
                 type: "item",
                 graphic: "editorial",
                 customImage: "",
-                title: "신규 디자인 항목",
-                code: "과업 세부 범위 및 산출물 내역",
+                title: "신규 디자인 제작 항목",
+                code: "과업 범위 및 산출물 상세 설명",
                 qty: 1,
                 originalPrice: 0,
                 price: 1500000,
                 subItems: [
-                    { title: "포스터 디자인", qty: "1식", price: 800000 },
-                    { title: "리플렛 디자인", qty: "1식", price: 700000 }
+                    { title: "세부 시안 디자인 A", qty: "1식", price: 800000 },
+                    { title: "세부 시안 디자인 B", qty: "1식", price: 700000 }
                 ]
             });
             renderItemsEditor();
             renderPreview();
         }
-
         function removeQuoteItem(idx) {
             state.items.splice(idx, 1);
             renderItemsEditor();
             renderPreview();
         }
-
         function moveItem(idx, dir) {
             const target = idx + dir;
             if (target < 0 || target >= state.items.length) return;
@@ -1075,18 +945,12 @@
             renderItemsEditor();
             renderPreview();
         }
-
         function addSubItem(itemIdx) {
             if (!state.items[itemIdx].subItems) state.items[itemIdx].subItems = [];
-            state.items[itemIdx].subItems.push({
-                title: "세부 제작 품목 입력",
-                qty: "1식",
-                price: 0
-            });
+            state.items[itemIdx].subItems.push({ title: "세부 작업 항목", qty: "1식", price: 0 });
             renderItemsEditor();
             renderPreview();
         }
-
         function updateSubItem(itemIdx, subIdx, key, val) {
             if (key === 'price') {
                 state.items[itemIdx].subItems[subIdx][key] = val === '' ? 0 : Number(val);
@@ -1095,13 +959,11 @@
             }
             renderPreview();
         }
-
         function removeSubItem(itemIdx, subIdx) {
             state.items[itemIdx].subItems.splice(subIdx, 1);
             renderItemsEditor();
             renderPreview();
         }
-
         function sumSubItemsToParent(itemIdx) {
             const subs = state.items[itemIdx].subItems || [];
             const sum = subs.reduce((acc, cur) => acc + (Number(cur.price) || 0), 0);
@@ -1109,10 +971,9 @@
                 state.items[itemIdx].price = sum;
                 renderItemsEditor();
                 renderPreview();
-                showToast('세부 품목 단가의 합계가 상위 품목 단가에 반영되었습니다.');
+                showToast('세부 단가 합계가 상위 단가에 반영되었습니다.');
             }
         }
-
         function uploadItemImage(idx, inputEl) {
             const file = inputEl.files && inputEl.files[0];
             if (!file) return;
@@ -1124,26 +985,25 @@
             };
             reader.readAsDataURL(file);
         }
-
         function clearItemImage(idx) {
             state.items[idx].customImage = "";
             renderItemsEditor();
             renderPreview();
         }
 
-        // 3. 세금/할인(Extra Summary) 에디터 렌더링
+        // 3. 합계 요약 에디터
         function renderSummaryEditor() {
             const container = document.getElementById('extra-summary-container');
             container.innerHTML = state.extraSummary.map((row, idx) => `
                 <div class="grid grid-cols-12 items-center gap-2">
-                    <div class="col-span-6 sm:col-span-7 min-w-0">
-                        <input type="text" value="${escapeHtml(row.label)}" oninput="updateSummaryRow(${idx}, 'label', this.value)" class="apple-input !py-2 !px-3 text-[13px] font-medium" placeholder="항목명 (예: VAT 10%)">
+                    <div class="col-span-7">
+                        <input type="text" value="${escapeHtml(row.label)}" oninput="updateSummaryRow(${idx}, 'label', this.value)" class="apple-input !py-1.5 !px-2.5 text-[12.5px]" placeholder="항목명 (예: VAT 10%)">
                     </div>
-                    <div class="col-span-5 sm:col-span-4 min-w-0">
-                        <input type="number" value="${row.amount}" oninput="updateSummaryRow(${idx}, 'amount', this.value)" class="apple-input !py-2 !px-3 text-right font-mono font-semibold text-[13px]" placeholder="금액">
+                    <div class="col-span-4">
+                        <input type="number" value="${row.amount}" oninput="updateSummaryRow(${idx}, 'amount', this.value)" class="apple-input !py-1.5 !px-2.5 text-right font-mono font-semibold text-[12.5px]">
                     </div>
                     <div class="col-span-1 flex justify-end">
-                        <button onclick="removeSummaryRow(${idx})" class="apple-btn p-1.5 text-[#86868B] hover:text-red-500 rounded-lg transition">
+                        <button type="button" onclick="removeSummaryRow(${idx})" class="p-1 text-[#86868B] hover:text-red-500">
                             <i data-lucide="x" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -1151,7 +1011,6 @@
             `).join('');
             lucide.createIcons();
         }
-
         function updateSummaryRow(idx, key, val) {
             state.extraSummary[idx][key] = key === 'amount' ? Number(val) : val;
             renderPreview();
@@ -1167,7 +1026,7 @@
             renderPreview();
         }
 
-        // 전체 입력칸 동기화
+        // State -> 입력 폼 동기화
         function syncInputsFromState() {
             document.getElementById('inp-greeting').value = state.greeting;
             document.getElementById('inp-subtitle').value = state.subtitle;
@@ -1199,204 +1058,321 @@
             renderSummaryEditor();
         }
 
-        // 실시간 종이 미리보기 렌더링 (html2canvas 캡처 시에도 1px의 어긋남이 없도록 설계)
-        function renderPreview() {
-            const paper = document.getElementById('invoice-paper');
-            const paperBg = state.paperTone || '#f6f6f4';
-            paper.style.backgroundColor = paperBg;
+        // [핵심] SVG 고정 좌표 헤드라인 + 서브타이틀 통합 블록 (화면과 다운로드 파일에서 "hello."와 서브타이틀이 절대 겹치지 않도록 100% 보장)
+        function buildHeroHeaderSvgHtml(greetingText, subtitleText, txtCol) {
+            const gText = (greetingText || 'hello.').trim();
+            const sText = (subtitleText || '').trim().toUpperCase();
+            const len = gText.length;
 
+            let gSize = 80;
+            let gY = 66;
+            let sY = 92;
+            let totalH = 100;
+
+            if (len <= 6) {
+                gSize = 80; gY = 66; sY = 92; totalH = 100;
+            } else if (len <= 10) {
+                gSize = 58; gY = 50; sY = 74; totalH = 82;
+            } else if (len <= 16) {
+                gSize = 42; gY = 38; sY = 60; totalH = 68;
+            } else {
+                gSize = 30; gY = 28; sY = 48; totalH = 56;
+            }
+
+            return `
+                <svg width="360" height="${totalH}" viewBox="0 0 360 ${totalH}" style="display:block; overflow:visible;">
+                    <text x="0" y="${gY}" fill="${txtCol}" font-family="'Inter', 'Pretendard', sans-serif" font-weight="900" font-size="${gSize}px" letter-spacing="-0.055em">${escapeHtml(gText)}</text>
+                    <text x="2" y="${sY}" fill="${txtCol}" font-family="'Inter', 'Pretendard', sans-serif" font-weight="800" font-size="12px" letter-spacing="0.04em">${escapeHtml(sText)}</text>
+                </svg>
+            `;
+        }
+
+        // [핵심] SVG 고정 좌표 정가 취소선 (다운로드 시 취소선이 위로 밀리지 않고 숫자 정중앙을 통과)
+        function buildStrikePriceSvgHtml(priceStr, txtCol) {
+            const w = Math.max(64, priceStr.length * 6.8);
+            const lineStart = Math.max(0, w - (priceStr.length * 6.1));
+            return `
+                <svg width="${w}" height="15" viewBox="0 0 ${w} 15" style="display:block; margin-left:auto; overflow:visible;">
+                    <text x="${w}" y="11" text-anchor="end" fill="${txtCol}" fill-opacity="0.45" font-family="'Inter', 'Pretendard', sans-serif" font-size="9.5px" font-weight="500">${escapeHtml(priceStr)}</text>
+                    <line x1="${lineStart}" y1="7.5" x2="${w}" y2="7.5" stroke="${txtCol}" stroke-opacity="0.65" stroke-width="1.2"/>
+                </svg>
+            `;
+        }
+
+        // 품목 행 HTML 빌더 (정확한 4열 비율: 설명 52% / 수량 10% / 단가 18% / 합계 20%)
+        function buildItemRowHtml(item, txtCol, accCol) {
+            if (item.type === 'category') {
+                const badgeSvg = item.categoryCode ? `
+                    <svg width="24" height="17" viewBox="0 0 24 17" style="display:block; flex-shrink:0; margin-right:8px;">
+                        <rect x="0" y="0" width="24" height="17" rx="3.5" fill="${accCol}" fill-opacity="0.1"/>
+                        <text x="12" y="11.8" text-anchor="middle" fill="${accCol}" font-family="'Inter', 'Pretendard', sans-serif" font-size="9.5px" font-weight="900">${escapeHtml(item.categoryCode)}</text>
+                    </svg>
+                ` : '';
+                return `
+                    <div style="padding-top:14px; padding-bottom:8px; display:flex; align-items:center; border-top:1px solid rgba(0,0,0,0.14); color:${accCol};">
+                        ${badgeSvg}
+                        <span class="organic-text" style="font-size:10.5px; font-weight:900; text-transform:uppercase; letter-spacing:0.04em; line-height:1.35;">${escapeHtml(item.title)}</span>
+                    </div>
+                `;
+            }
+
+            const lineTotal = (Number(item.qty) || 0) * (Number(item.price) || 0);
+            let thumbHtml = '';
+            if (item.customImage) {
+                thumbHtml = `<img src="${item.customImage}" style="width:44px; height:34px; object-fit:contain; margin-right:12px; flex-shrink:0; margin-top:2px;" alt="item">`;
+            } else if (item.graphic && item.graphic !== 'none' && GRAPHIC_THUMBNAILS[item.graphic]) {
+                thumbHtml = `<div style="margin-right:12px; flex-shrink:0; margin-top:2px; color:${accCol};">${GRAPHIC_THUMBNAILS[item.graphic].svg}</div>`;
+            }
+
+            const hasDiscount = item.originalPrice && Number(item.originalPrice) > Number(item.price);
+            const subItems = item.subItems || [];
+
+            const subItemsPreviewHtml = subItems.length > 0 ? `
+                <div style="margin-top:8px; padding-top:7px; border-top:1px solid rgba(0,0,0,0.08);">
+                    ${subItems.map(sub => `
+                        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px; font-size:10px; line-height:1.45; margin-bottom:3px; color:${txtCol}; opacity:0.85;">
+                            <div style="display:flex; align-items:flex-start; gap:5px; min-width:0; flex:1;">
+                                <span style="opacity:0.55; flex-shrink:0;">└</span>
+                                <div class="organic-text">
+                                    <span style="font-weight:500;">${escapeHtml(sub.title)}</span>
+                                    ${sub.qty ? `<span style="font-size:9.5px; opacity:0.65; margin-left:4px; white-space:nowrap;">(${escapeHtml(sub.qty)})</span>` : ''}
+                                </div>
+                            </div>
+                            ${Number(sub.price) > 0 ? `<span class="organic-num" style="font-family:'Inter',monospace; font-size:9.5px; opacity:0.8; flex-shrink:0;">${formatMoney(sub.price)}</span>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            ` : '';
+
+            return `
+                <div style="padding:14px 0; display:flex; align-items:flex-start; font-size:11px; color:${txtCol};">
+                    <div style="width:52%; padding-right:12px; display:flex; align-items:flex-start; min-width:0;">
+                        ${thumbHtml}
+                        <div style="flex:1; min-width:0;">
+                            <div class="organic-text" style="font-weight:800; font-size:12px; line-height:1.35; color:${txtCol};">${escapeHtml(item.title)}</div>
+                            ${item.code ? `<div class="organic-text" style="font-size:10px; opacity:0.72; margin-top:2px; line-height:1.42;">${escapeHtml(item.code)}</div>` : ''}
+                            ${subItemsPreviewHtml}
+                        </div>
+                    </div>
+                    <div class="organic-num" style="width:10%; text-align:center; font-weight:600; padding-top:2px;">
+                        &times; ${item.qty}
+                    </div>
+                    <div class="organic-num" style="width:18%; text-align:right; padding-top:2px; line-height:1.35;">
+                        ${hasDiscount ? `<div style="margin-bottom:2px;">${buildStrikePriceSvgHtml(formatMoney(item.originalPrice), txtCol)}</div>` : ''}
+                        <div style="font-weight:600;">${formatMoney(item.price)}</div>
+                    </div>
+                    <div class="organic-num" style="width:20%; text-align:right; font-weight:800; padding-top:2px;">
+                        ${formatMoney(lineTotal)}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 품목 높이 계산 (A4 자동 페이지네이션용)
+        function estimateItemHeight(item) {
+            if (item.type === 'category') return 38;
+            const subs = item.subItems || [];
+            const subH = subs.length > 0 ? (16 + subs.length * 20) : 0;
+            return 56 + subH;
+        }
+
+        // A4 다중 페이지 렌더링
+        function renderPreview() {
+            const pagesHost = document.getElementById('pages-host');
+            if (!pagesHost) return;
+
+            const paperBg = state.paperTone || '#f6f6f4';
             const txtCol = state.textColor || '#141414';
             const accCol = state.accentColor || '#181818';
             const bdrCol = state.borderColor || '#181818';
 
-            const greetingEl = document.getElementById('prev-greeting');
-            greetingEl.style.color = txtCol;
-            greetingEl.textContent = state.greeting;
+            let subtotal = 0;
+            state.items.forEach(item => {
+                if (item.type !== 'category') {
+                    subtotal += (Number(item.qty) || 0) * (Number(item.price) || 0);
+                }
+            });
 
-            // 메인 헤드라인 글자 길이에 따라 폰트 크기와 행간을 안정적으로 자동 조절 (line-height 1.04 이상 유지로 캡처 겹침 완벽 방지)
-            const gLen = (state.greeting || '').trim().length;
-            if (gLen <= 6) {
-                greetingEl.style.fontSize = '82px';
-                greetingEl.style.lineHeight = '1.04';
-            } else if (gLen <= 10) {
-                greetingEl.style.fontSize = '62px';
-                greetingEl.style.lineHeight = '1.06';
-            } else if (gLen <= 16) {
-                greetingEl.style.fontSize = '44px';
-                greetingEl.style.lineHeight = '1.1';
+            // A4 높이(1046px, 상하 패딩 56px*2 = 112px -> 내부 가용 높이 934px)
+            const SINGLE_PAGE_ITEMS_LIMIT = 410;
+            const FIRST_PAGE_ITEMS_LIMIT = 560;
+            const MIDDLE_PAGE_ITEMS_LIMIT = 720;
+            const LAST_PAGE_ITEMS_LIMIT = 500;
+
+            const totalItemsH = state.items.reduce((acc, it) => acc + estimateItemHeight(it), 0);
+            let pages = [];
+
+            if (totalItemsH <= SINGLE_PAGE_ITEMS_LIMIT || state.items.length === 0) {
+                pages.push({ items: state.items, isFirst: true, isLast: true });
             } else {
-                greetingEl.style.fontSize = '32px';
-                greetingEl.style.lineHeight = '1.15';
+                let curItems = [];
+                let curH = 0;
+                let isFirst = true;
+
+                state.items.forEach(it => {
+                    const h = estimateItemHeight(it);
+                    const maxH = isFirst ? FIRST_PAGE_ITEMS_LIMIT : MIDDLE_PAGE_ITEMS_LIMIT;
+                    if (curItems.length > 0 && (curH + h) > maxH) {
+                        pages.push({ items: curItems, isFirst: isFirst, isLast: false });
+                        curItems = [it];
+                        curH = h;
+                        isFirst = false;
+                    } else {
+                        curItems.push(it);
+                        curH += h;
+                    }
+                });
+
+                if (curItems.length > 0) {
+                    const lastLimit = isFirst ? SINGLE_PAGE_ITEMS_LIMIT : LAST_PAGE_ITEMS_LIMIT;
+                    if (curH > lastLimit) {
+                        pages.push({ items: curItems, isFirst: isFirst, isLast: false });
+                        pages.push({ items: [], isFirst: false, isLast: true });
+                    } else {
+                        pages.push({ items: curItems, isFirst: isFirst, isLast: true });
+                    }
+                }
             }
 
-            document.getElementById('prev-subtitle').style.color = txtCol;
-            document.getElementById('prev-company').style.color = txtCol;
+            const totalPages = pages.length;
+            const badgeEl = document.getElementById('page-count-badge');
+            if (badgeEl) {
+                badgeEl.textContent = `A4 · ${totalPages} ${totalPages > 1 ? 'Pages' : 'Page'}`;
+            }
 
-            document.getElementById('prev-subtitle').textContent = state.subtitle;
-            document.getElementById('prev-company').textContent = state.company;
-
-            // 우측 상단 메타 정보 (table-cell 정렬 구조와 동일한 안정적 블록)
-            document.getElementById('prev-meta-list').style.color = txtCol;
-            document.getElementById('prev-meta-list').innerHTML = state.meta.map(m => `
-                <div class="leading-[1.58] organic-text">
-                    <span class="font-extrabold uppercase tracking-tight mr-1.5" style="color:${accCol}">${escapeHtml(m.label)}</span>
-                    <span class="font-normal" style="color:${txtCol}">${escapeHtml(m.value)}</span>
+            const metaHtml = state.meta.map(m => `
+                <div class="organic-text" style="line-height:1.55; font-size:11px;">
+                    <span style="font-weight:800; text-transform:uppercase; margin-right:6px; color:${accCol};">${escapeHtml(m.label)}</span>
+                    <span style="font-weight:400; color:${txtCol};">${escapeHtml(m.value)}</span>
                 </div>
             `).join('');
 
-            document.getElementById('prev-bill-title').style.color = accCol;
-            document.getElementById('prev-bill-title').textContent = state.billTitle;
-            document.getElementById('prev-bill-lines').style.color = txtCol;
-            document.getElementById('prev-bill-lines').textContent = state.billLines;
+            let grandTotal = subtotal;
+            let summaryRowsHtml = `
+                <div style="padding:6px 0; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,0,0,0.12); color:${txtCol};">
+                    <span style="font-weight:500;">Subtotal</span>
+                    <span class="organic-num" style="font-weight:600;">${formatMoney(subtotal)}</span>
+                </div>
+            `;
+            state.extraSummary.forEach(row => {
+                const amt = Number(row.amount) || 0;
+                grandTotal += amt;
+                summaryRowsHtml += `
+                    <div style="padding:6px 0; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,0,0,0.12); color:${txtCol};">
+                        <span class="organic-text" style="font-weight:500;">${escapeHtml(row.label)}</span>
+                        <span class="organic-num" style="font-weight:600;">${formatMoney(amt)}</span>
+                    </div>
+                `;
+            });
+            summaryRowsHtml += `
+                <div style="padding-top:10px; padding-bottom:2px; display:flex; justify-content:space-between; align-items:center; font-size:13px; color:${txtCol};">
+                    <span style="font-weight:800;">Total</span>
+                    <span class="organic-num" style="font-weight:900; font-size:14px; color:${accCol};">${formatMoney(grandTotal)}</span>
+                </div>
+            `;
 
-            document.getElementById('prev-ship-title').style.color = accCol;
-            document.getElementById('prev-ship-title').textContent = state.shipTitle;
-            document.getElementById('prev-ship-lines').style.color = txtCol;
-            document.getElementById('prev-ship-lines').textContent = state.shipLines;
+            const tyLen = (state.footerThankYou || '').length;
+            const tyFontSize = tyLen > 32 ? '14px' : (tyLen > 22 ? '16px' : '18px');
 
-            const tableHeader = document.getElementById('prev-table-header');
-            tableHeader.style.borderColor = bdrCol;
-            tableHeader.style.color = txtCol;
+            pagesHost.innerHTML = pages.map((page, pageIdx) => {
+                const pageNum = pageIdx + 1;
 
-            const notesSection = document.getElementById('prev-notes-section');
-            notesSection.style.borderColor = bdrCol;
-
-            let subtotal = 0;
-            const itemsContainer = document.getElementById('prev-items-container');
-            itemsContainer.innerHTML = state.items.map(item => {
-                // 1) 상위 대분류 카테고리 행 렌더링 (배지 내부 숫자가 아래로 쏠리지 않도록 SVG 배지 사용)
-                if (item.type === 'category') {
-                    const badgeSvg = item.categoryCode ? `
-                        <svg width="24" height="17" viewBox="0 0 24 17" class="shrink-0 mr-2" style="display:block;">
-                            <rect x="0" y="0" width="24" height="17" rx="3.5" fill="${accCol}" fill-opacity="0.09"/>
-                            <text x="12" y="11.8" text-anchor="middle" fill="${accCol}" font-family="Inter, Pretendard, sans-serif" font-size="9.5" font-weight="900">${escapeHtml(item.categoryCode)}</text>
-                        </svg>
-                    ` : '';
-                    return `
-                        <div class="pt-5 pb-2.5 flex items-center border-t border-black/15" style="color:${accCol}">
-                            ${badgeSvg}
-                            <span class="text-[10.5px] font-black uppercase tracking-[0.05em] leading-[1.35] organic-text">${escapeHtml(item.title)}</span>
+                const headerSection = page.isFirst ? `
+                    <!-- 상단 헤드라인 & 우측 회사 메타 -->
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:24px; margin-bottom:32px;">
+                        <div class="preview-clickable" onclick="focusInput('inp-greeting')" style="flex:1; min-width:0;">
+                            ${buildHeroHeaderSvgHtml(state.greeting, state.subtitle, txtCol)}
                         </div>
-                    `;
-                }
+                        <div class="preview-clickable" onclick="focusInput('inp-company')" style="width:250px; flex-shrink:0; padding-top:4px; color:${txtCol};">
+                            <div class="organic-text" style="font-weight:800; font-size:13.5px; margin-bottom:6px; line-height:1.35;">${escapeHtml(state.company)}</div>
+                            <div>${metaHtml}</div>
+                        </div>
+                    </div>
 
-                // 2) 품목 및 하위 세부 품목(Sub-items) 렌더링
-                const lineTotal = (Number(item.qty) || 0) * (Number(item.price) || 0);
-                subtotal += lineTotal;
+                    <!-- 수신자 & 프로젝트 정보 2단 그리드 -->
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:36px; margin-bottom:26px; font-size:11.5px; line-height:1.62;">
+                        <div class="preview-clickable" onclick="focusInput('inp-bill-lines')" style="min-width:0;">
+                            <div class="organic-text" style="font-weight:800; font-size:10.5px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; color:${accCol};">${escapeHtml(state.billTitle)}</div>
+                            <div class="organic-text" style="white-space:pre-wrap; color:${txtCol};">${escapeHtml(state.billLines)}</div>
+                        </div>
+                        <div class="preview-clickable" onclick="focusInput('inp-ship-lines')" style="min-width:0;">
+                            <div class="organic-text" style="font-weight:800; font-size:10.5px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; color:${accCol};">${escapeHtml(state.shipTitle)}</div>
+                            <div class="organic-text" style="white-space:pre-wrap; color:${txtCol};">${escapeHtml(state.shipLines)}</div>
+                        </div>
+                    </div>
+                ` : `
+                    <!-- 이어지는 페이지 상단 바 -->
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; margin-bottom:18px; border-bottom:1px solid rgba(0,0,0,0.15); font-size:10.5px; color:${txtCol};">
+                        <div style="font-weight:800;">${escapeHtml(state.company)} <span style="opacity:0.5; font-weight:400; margin-left:6px;">— CONTINUED</span></div>
+                        <div style="font-family:monospace; font-weight:700; opacity:0.65;">PAGE ${pageNum} / ${totalPages}</div>
+                    </div>
+                `;
 
-                let thumbHtml = '';
-                if (item.customImage) {
-                    thumbHtml = `<img src="${item.customImage}" class="w-12 h-10 object-contain mr-3.5 shrink-0 mt-0.5" alt="item">`;
-                } else if (item.graphic && item.graphic !== 'none' && GRAPHIC_THUMBNAILS[item.graphic]) {
-                    thumbHtml = `<div class="mr-3.5 shrink-0 flex items-center justify-center mt-0.5" style="color:${accCol}">${GRAPHIC_THUMBNAILS[item.graphic].svg}</div>`;
-                }
-
-                const hasDiscount = item.originalPrice && Number(item.originalPrice) > Number(item.price);
-                const subItems = item.subItems || [];
-
-                const subItemsPreviewHtml = subItems.length > 0 ? `
-                    <div class="mt-2.5 pt-2 border-t border-black/[0.08] space-y-1.5">
-                        ${subItems.map(sub => `
-                            <div class="flex items-start justify-between gap-2 text-[10.5px] leading-[1.45] opacity-85">
-                                <div class="flex items-start gap-1.5 min-w-0 flex-1">
-                                    <span class="font-mono text-[9.5px] opacity-55 shrink-0">└</span>
-                                    <div class="organic-text">
-                                        <span class="font-medium">${escapeHtml(sub.title)}</span>
-                                        ${sub.qty ? `<span class="text-[9.5px] opacity-65 font-normal ml-1 whitespace-nowrap">(${escapeHtml(sub.qty)})</span>` : ''}
-                                    </div>
-                                </div>
-                                ${Number(sub.price) > 0 ? `<span class="font-mono text-[10px] opacity-80 shrink-0 organic-num">${formatMoney(sub.price)}</span>` : ''}
-                            </div>
-                        `).join('')}
+                const itemsTableSection = page.items.length > 0 ? `
+                    <!-- 테이블 컬럼 헤더 -->
+                    <div style="border-top:2px solid ${bdrCol}; border-bottom:1px solid rgba(0,0,0,0.15); padding:9px 0; display:flex; align-items:center; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:${txtCol};">
+                        <div style="width:52%; padding-right:12px;">ITEM DESCRIPTION</div>
+                        <div style="width:10%; text-align:center;">QTY</div>
+                        <div style="width:18%; text-align:right;">PRICE</div>
+                        <div style="width:20%; text-align:right;">ITEM TOTAL</div>
+                    </div>
+                    <!-- 품목 리스트 -->
+                    <div class="divide-y divide-black/10" style="border-bottom:1px solid rgba(0,0,0,0.2);">
+                        ${page.items.map(it => buildItemRowHtml(it, txtCol, accCol)).join('')}
                     </div>
                 ` : '';
 
-                const priceStr = formatMoney(item.price);
-                const totalStr = formatMoney(lineTotal);
-                const priceFontClass = priceStr.length > 11 ? 'text-[10px]' : 'text-[11px]';
-                const totalFontClass = totalStr.length > 11 ? 'text-[10.5px]' : 'text-[11px]';
+                const summarySection = page.isLast ? `
+                    <!-- 노트 & 합계 요약 -->
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:28px; padding-top:18px; padding-bottom:22px; border-bottom:2px solid ${bdrCol};">
+                        <div class="preview-clickable" onclick="focusInput('inp-notes-content')" style="min-width:0; padding-right:8px;">
+                            <div class="organic-text" style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px; color:${accCol};">${escapeHtml(state.notesTitle)}</div>
+                            <div class="organic-text" style="font-size:10.5px; line-height:1.6; white-space:pre-wrap; color:${txtCol};">${escapeHtml(state.notesContent)}</div>
+                        </div>
+                        <div style="font-size:11.5px; min-width:0;">
+                            ${summaryRowsHtml}
+                        </div>
+                    </div>
+                ` : `
+                    <div style="padding-top:14px; display:flex; justify-content:space-between; align-items:center; font-size:10px; font-weight:600; opacity:0.55; color:${txtCol};">
+                        <span>다음 페이지로 이어집니다 (Continued on next page...)</span>
+                        <span style="font-family:monospace;">PAGE ${pageNum} / ${totalPages}</span>
+                    </div>
+                `;
 
-                // 정가 취소선: html2canvas에서 선이 위로 붕 뜨는 현상을 막기 위해 custom-strike 클래스 사용
-                return `
-                    <div class="py-5 grid grid-cols-12 gap-2 items-start text-[11px]" style="color:${txtCol}">
-                        <div class="col-span-6 flex items-start pr-2 min-w-0">
-                            ${thumbHtml}
-                            <div class="flex-1 min-w-0">
-                                <div class="font-extrabold text-[12px] leading-[1.4] tracking-tight organic-text" style="color:${txtCol}">${escapeHtml(item.title)}</div>
-                                ${item.code ? `<div class="text-[10px] opacity-70 mt-1 leading-[1.5] organic-text">${escapeHtml(item.code)}</div>` : ''}
-                                ${subItemsPreviewHtml}
+                const footerSection = page.isLast ? `
+                    <!-- 하단 에디토리얼 푸터 -->
+                    <div class="preview-clickable" onclick="focusInput('inp-footer-address')" style="padding-top:16px;">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:16px; margin-bottom:14px;">
+                            <div class="organic-text" style="text-align:right; font-size:10px; line-height:1.6; white-space:pre-wrap; padding-right:8px; color:${txtCol};">${escapeHtml(state.footerAddress)}</div>
+                            <div class="organic-text" style="text-align:left; padding-left:8px; font-weight:900; line-height:1.18; text-transform:uppercase; white-space:pre-wrap; color:${txtCol}; font-size:${tyFontSize};">${escapeHtml(state.footerThankYou)}</div>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="font-size:10.5px; font-weight:800; margin-bottom:7px; color:${txtCol};">${escapeHtml(state.website)}</div>
+                            <div style="display:${state.showSocials ? 'flex' : 'none'}; align-items:center; justify-content:center; gap:8px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="${accCol}"/><path fill="${paperBg}" d="M13.4 17.5v-5h1.7l.25-2h-1.95V9.2c0-.58.16-.97 1-.97h1.05V6.45c-.18-.02-.8-.08-1.52-.08-1.5 0-2.53.92-2.53 2.6v1.53H9.7v2h1.7v5h2z"/></svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="${accCol}"/><path fill="${paperBg}" d="M17.3 8.8c-.4.17-.82.29-1.26.35.45-.27.8-.7.96-1.21-.42.25-.9.43-1.4.53a2.2 2.2 0 00-3.8 1.5c0 .17.02.34.05.5-1.83-.09-3.45-.97-4.54-2.3-.19.33-.3.7-.3 1.11 0 .76.39 1.44.98 1.83-.36-.01-.7-.11-1-.27v.03c0 1.07.76 1.96 1.77 2.16-.18.05-.38.08-.58.08-.14 0-.28-.01-.41-.04.28.88 1.1 1.51 2.06 1.53a4.43 4.43 0 01-2.74.94c-.18 0-.35-.01-.53-.03.98.63 2.14 1 3.39 1 4.06 0 6.29-3.37 6.29-6.29 0-.1 0-.19-.01-.29.43-.31.8-.7 1.1-1.14z"/></svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="${accCol}"/><path fill="${paperBg}" d="M8.2 7.5h4.1c1.6 0 2.6.8 2.6 2.1 0 .9-.5 1.5-1.2 1.8.9.2 1.5.9 1.5 2 0 1.5-1.1 2.4-2.8 2.4H8.2V7.5zm1.8 3.4h2c.7 0 1.1-.3 1.1-.9 0-.6-.4-.9-1.1-.9h-2v1.8zm0 3.4h2.2c.8 0 1.2-.4 1.2-1 0-.7-.5-1-1.2-1h-2.2v2z"/></svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="${accCol}"/><rect x="7" y="7" width="10" height="10" rx="2.8" fill="none" stroke="${paperBg}" stroke-width="1.5"/><circle cx="12" cy="12" r="2.2" fill="none" stroke="${paperBg}" stroke-width="1.5"/><circle cx="14.9" cy="9.1" r="0.8" fill="${paperBg}"/></svg>
                             </div>
+                            ${totalPages > 1 ? `<div style="margin-top:6px; font-family:monospace; font-size:9px; opacity:0.45; color:${txtCol};">PAGE ${pageNum} / ${totalPages}</div>` : ''}
                         </div>
-                        <div class="col-span-1 text-center font-semibold pt-0.5 organic-num">
-                            &times; ${item.qty}
+                    </div>
+                ` : `<div></div>`;
+
+                return `
+                    <div class="invoice-page-sheet paper-canvas select-text" style="width:740px; height:1046px; padding:54px 56px; display:flex; flex-direction:column; justify-content:space-between; background-color:${paperBg};">
+                        <div>
+                            ${headerSection}
+                            ${itemsTableSection}
+                            ${summarySection}
                         </div>
-                        <div class="col-span-2 text-right leading-[1.35] pt-0.5 organic-num ${priceFontClass}">
-                            ${hasDiscount ? `<div class="mb-0.5"><span class="custom-strike opacity-45 text-[9.5px]">${formatMoney(item.originalPrice)}</span></div>` : ''}
-                            <div class="font-semibold">${priceStr}</div>
-                        </div>
-                        <div class="col-span-3 text-right font-bold pt-0.5 organic-num ${totalFontClass}">
-                            ${totalStr}
-                        </div>
+                        ${footerSection}
                     </div>
                 `;
             }).join('');
 
-            document.getElementById('prev-notes-title').style.color = accCol;
-            document.getElementById('prev-notes-title').textContent = state.notesTitle;
-            document.getElementById('prev-notes-content').style.color = txtCol;
-            document.getElementById('prev-notes-content').textContent = state.notesContent;
-
-            let grandTotal = subtotal;
-            let summaryHtml = `
-                <div class="py-1.5 flex justify-between items-center gap-3" style="color:${txtCol}">
-                    <span class="font-medium organic-text">Subtotal</span>
-                    <span class="font-semibold organic-num shrink-0">${formatMoney(subtotal)}</span>
-                </div>
-            `;
-
-            state.extraSummary.forEach(row => {
-                const amt = Number(row.amount) || 0;
-                grandTotal += amt;
-                summaryHtml += `
-                    <div class="py-1.5 flex justify-between items-center gap-3" style="color:${txtCol}">
-                        <span class="font-medium organic-text">${escapeHtml(row.label)}</span>
-                        <span class="font-semibold organic-num shrink-0">${formatMoney(amt)}</span>
-                    </div>
-                `;
-            });
-
-            summaryHtml += `
-                <div class="pt-2.5 pb-1 flex justify-between items-center gap-3 text-[12.5px]" style="color:${txtCol}">
-                    <span class="font-bold shrink-0">Total</span>
-                    <span class="font-black text-[13.5px] organic-num shrink-0" style="color:${accCol}">${formatMoney(grandTotal)}</span>
-                </div>
-            `;
-            document.getElementById('prev-summary-rows').innerHTML = summaryHtml;
-
-            document.getElementById('prev-footer-address').style.color = txtCol;
-            document.getElementById('prev-footer-address').textContent = state.footerAddress;
-            
-            const thankYouEl = document.getElementById('prev-footer-thankyou');
-            thankYouEl.style.color = txtCol;
-            thankYouEl.textContent = state.footerThankYou;
-            const tyLen = (state.footerThankYou || '').length;
-            thankYouEl.style.fontSize = tyLen > 32 ? '14px' : (tyLen > 22 ? '16px' : '18px');
-
-            document.getElementById('prev-website').style.color = txtCol;
-            document.getElementById('prev-website').textContent = state.website;
-
-            // SVG 소셜 아이콘 컬러 동기화
-            document.querySelectorAll('#prev-socials .social-bg').forEach(el => el.setAttribute('fill', accCol));
-            document.querySelectorAll('#prev-socials .social-fg').forEach(el => el.setAttribute('fill', paperBg));
-            document.querySelectorAll('#prev-socials .social-stroke').forEach(el => el.setAttribute('stroke', paperBg));
-            document.getElementById('prev-socials').style.display = state.showSocials ? 'flex' : 'none';
-
             applyZoom();
-        }
-
-        function escapeHtml(str) {
-            if (typeof str !== 'string') return '';
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         }
 
         function showToast(msg) {
@@ -1408,51 +1384,53 @@
             }, 2600);
         }
 
-        // 고해상도 JPG & PDF 전용 클린 오프스크린 렌더러 (화면 배율/스크롤/뷰모드 영향을 전혀 받지 않고 100% 정밀 캡처)
+        // 고해상도 A4 JPG & 다중페이지 PDF 내보내기
         async function exportDocument(format) {
-            const sourcePaper = document.getElementById('invoice-paper');
+            const pageSheets = Array.from(document.querySelectorAll('.invoice-page-sheet'));
+            if (pageSheets.length === 0) return;
+
             let offscreenHost = null;
-
             try {
-                showToast(format === 'pdf' ? '고해상도 PDF 문서를 생성하고 있습니다...' : '고해상도 JPG 이미지를 생성하고 있습니다...');
+                showToast(format === 'pdf' ? 'A4 PDF 파일을 생성하고 있습니다...' : 'A4 JPG 이미지를 생성하고 있습니다...');
 
-                // 웹폰트가 완전히 로드될 때까지 대기하여 베이스라인 어긋남 방지
                 if (document.fonts && document.fonts.ready) {
                     await document.fonts.ready;
                 }
 
-                // 화면의 scale/overflow 영향을 전혀 받지 않는 독립된 1:1 오프스크린 컨테이너 생성
                 offscreenHost = document.createElement('div');
                 offscreenHost.style.position = 'fixed';
                 offscreenHost.style.left = '-9999px';
                 offscreenHost.style.top = '0';
                 offscreenHost.style.width = '740px';
                 offscreenHost.style.zIndex = '-9999';
-                offscreenHost.style.pointerEvents = 'none';
-
-                const clonePaper = sourcePaper.cloneNode(true);
-                clonePaper.style.transform = 'none';
-                clonePaper.style.boxShadow = 'none';
-                clonePaper.style.margin = '0';
-                clonePaper.style.width = '740px';
-                clonePaper.style.backgroundColor = state.paperTone || '#f6f6f4';
-
-                offscreenHost.appendChild(clonePaper);
                 document.body.appendChild(offscreenHost);
 
-                // 브라우저 레이아웃 계산 안정화 대기
-                await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+                const canvases = [];
+                for (let i = 0; i < pageSheets.length; i++) {
+                    offscreenHost.innerHTML = '';
+                    const clone = pageSheets[i].cloneNode(true);
+                    clone.style.transform = 'none';
+                    clone.style.boxShadow = 'none';
+                    clone.style.margin = '0';
+                    clone.style.width = '740px';
+                    clone.style.height = '1046px';
+                    offscreenHost.appendChild(clone);
 
-                const canvas = await html2canvas(clonePaper, {
-                    scale: 3,
-                    width: 740,
-                    windowWidth: 1200,
-                    scrollX: 0,
-                    scrollY: 0,
-                    useCORS: true,
-                    backgroundColor: state.paperTone || '#f6f6f4',
-                    logging: false
-                });
+                    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+                    const canvas = await html2canvas(clone, {
+                        scale: 3,
+                        width: 740,
+                        height: 1046,
+                        windowWidth: 1200,
+                        scrollX: 0,
+                        scrollY: 0,
+                        useCORS: true,
+                        backgroundColor: state.paperTone || '#f6f6f4',
+                        logging: false
+                    });
+                    canvases.push(canvas);
+                }
 
                 document.body.removeChild(offscreenHost);
                 offscreenHost = null;
@@ -1460,27 +1438,24 @@
                 const cleanName = (state.company || 'Quote').replace(/[^a-zA-Z0-9가-힣_-]/g, '_');
 
                 if (format === 'jpg') {
-                    const link = document.createElement('a');
-                    link.download = `${cleanName}_Quote.jpg`;
-                    link.href = canvas.toDataURL('image/jpeg', 0.98);
-                    link.click();
-                    showToast('고해상도 JPG 저장이 완료되었습니다.');
+                    canvases.forEach((canvas, idx) => {
+                        const link = document.createElement('a');
+                        const suffix = canvases.length > 1 ? `_Page${idx + 1}` : '';
+                        link.download = `${cleanName}_Quote${suffix}.jpg`;
+                        link.href = canvas.toDataURL('image/jpeg', 0.98);
+                        link.click();
+                    });
+                    showToast(`JPG 저장 완료 (${canvases.length}장)`);
                 } else {
                     const { jsPDF } = window.jspdf;
-                    const imgData = canvas.toDataURL('image/jpeg', 0.98);
-
-                    // 캔버스 비율에 맞춘 PDF 페이지 생성 (긴 견적서도 잘리지 않고 선명하게 저장)
-                    const pdfWidth = 210; // A4 가로 mm
-                    const pdfHeight = Math.max(297, (canvas.height * pdfWidth) / canvas.width);
-                    const pdf = new jsPDF({
-                        orientation: 'portrait',
-                        unit: 'mm',
-                        format: [pdfWidth, pdfHeight]
+                    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                    canvases.forEach((canvas, idx) => {
+                        if (idx > 0) pdf.addPage('a4', 'portrait');
+                        const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                        pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
                     });
-
-                    pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, (canvas.height * pdfWidth) / canvas.width);
                     pdf.save(`${cleanName}_Quote.pdf`);
-                    showToast('고해상도 PDF 저장이 완료되었습니다.');
+                    showToast(`PDF 저장 완료 (${canvases.length}페이지)`);
                 }
             } catch (err) {
                 console.error(err);
@@ -1509,10 +1484,13 @@
             ];
 
             bindings.forEach(({ id, key }) => {
-                document.getElementById(id).addEventListener('input', (e) => {
-                    state[key] = e.target.value;
-                    renderPreview();
-                });
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', (e) => {
+                        state[key] = e.target.value;
+                        renderPreview();
+                    });
+                }
             });
 
             const colorBindings = [
@@ -1523,11 +1501,14 @@
             ];
 
             colorBindings.forEach(({ id, key, txtId }) => {
-                document.getElementById(id).addEventListener('input', (e) => {
-                    state[key] = e.target.value;
-                    document.getElementById(txtId).textContent = e.target.value;
-                    renderPreview();
-                });
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', (e) => {
+                        state[key] = e.target.value;
+                        document.getElementById(txtId).textContent = e.target.value;
+                        renderPreview();
+                    });
+                }
             });
 
             document.getElementById('inp-show-socials').addEventListener('change', (e) => {
@@ -1544,7 +1525,7 @@
             if (window.innerWidth < 768) {
                 setViewMode('edit');
             } else {
-                fitPaperToScreen();
+                setViewMode('split');
             }
         };
 
