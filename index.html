@@ -631,76 +631,91 @@
             }
         };
 
-        // 한국어 기본 프리셋 데이터
+        // 한국어 기본 프리셋 데이터 (홍디자인 - 경기도청 공식 견적서)
         const PRESET_KR = {
             layout: "monolith",
             colorPreset: "ivory",
             greeting: "hello.",
-            subtitle: "THIS IS YOUR DESIGN QUOTATION",
-            company: "STUDIO MONOLITH",
+            subtitle: "HONG DESIGN | OFFICIAL QUOTATION",
+            company: "HONG DESIGN (홍디자인)",
             currency: "KRW",
             paperTone: "#F6F4EE",
             textColor: "#141414",
             accentColor: "#181818",
             borderColor: "#181818",
             meta: [
-                { label: "QUOTE NO.", value: "#SM-2026-084" },
-                { label: "DATE", value: "2026. 11. 04" },
+                { label: "QUOTE NO.", value: "HD-20261104-001" },
+                { label: "DATE", value: "2026.11.04.(수)" },
                 { label: "VALIDITY", value: "발행일로부터 30일" },
-                { label: "TERMS", value: "선금 50% / 잔금 50%" }
+                { label: "TERMS", value: "후불 (경기도 공공기관 행정 절차에 따름)" }
             ],
             billTitle: "CLIENT (수신)",
-            billLines: "주식회사 아크메 코리아\n브랜드 전략팀 김도윤 팀장님\n서울특별시 강남구 도산대로 45길 18\n010-4820-9910",
+            billLines: "기관명: 경기도청\n부서/담당: 경기도 공정경제과 오지혜 주무관\n주소: 경기도 수원시 영통구 도청로 30 (이의동)\n이메일: ohred@gg.go.kr",
             shipTitle: "PROJECT (과업 개요)",
-            shipLines: "2026 통합 브랜드 경험 및 인쇄 그래픽 제작\n제작 기간: 착수일로부터 6주\n담당 디렉터: 이서준 수석 디자이너\n인쇄 감리 및 최종 원본 데이터 일체 포함",
+            shipLines: "과업명: 경기프리웨이 홍보물 디자인 및 인쇄 제작\n제작 품목: 포스터 300매, 리플릿 2,000매, 웹배너 1종\n물류: 80개소 개별 소분 포장 및 택배 발송 포함\n기한: 2026.12.10.(목)",
             items: [
                 {
                     type: "category",
                     categoryCode: "01",
-                    title: "BRAND IDENTITY & PRINT (브랜딩 및 인쇄 제작)"
+                    title: "DESIGN & PRINTING (디자인 및 인쇄)"
+                },
+                {
+                    type: "item",
+                    graphic: "branding",
+                    customImage: "",
+                    title: "DESIGN & PLANNING (디자인 및 기획)",
+                    code: "홍보물 키비주얼 디자인 및 원고 기획",
+                    qty: 1,
+                    originalPrice: 0,
+                    price: 1350000,
+                    subItems: [
+                        { title: "A2 포스터 키비주얼 및 레이아웃 디자인", qty: "1종", price: 500000 },
+                        { title: "리플릿 편집 디자인 (210x200mm / 3단 접지·6면)", qty: "1식", price: 750000 },
+                        { title: "웹배너 디자인", qty: "1종", price: 100000 }
+                    ]
                 },
                 {
                     type: "item",
                     graphic: "editorial",
                     customImage: "",
-                    title: "인쇄 그래픽 디자인 패키지",
-                    code: "오프라인 행사 및 매장 비치용 인쇄물 디자인 · 인쇄 감리 포함",
+                    title: "PRINTING & PRODUCTION (인쇄 제작)",
+                    code: "오프셋 인쇄 및 후가공 (포스터/리플릿)",
                     qty: 1,
-                    originalPrice: 3200000,
-                    price: 2800000,
+                    originalPrice: 0,
+                    price: 837273,
                     subItems: [
-                        { title: "메인 키비주얼 포스터 디자인 (A1 / 국전지 2종 변형)", qty: "2종", price: 1500000 },
-                        { title: "3단 접지 리플렛 & 브로슈어 디자인 (6P 구성)", qty: "1식", price: 1300000 }
+                        { title: "포스터 인쇄 (A2 / 스노우 250g / 단면 무광코팅)", qty: "300매", price: 350000 },
+                        { title: "리플릿 인쇄 (스노우 200g / 오시 2줄 + 3단접지)", qty: "2,000매", price: 487273 }
                     ]
                 },
                 {
                     type: "category",
                     categoryCode: "02",
-                    title: "DIGITAL EXPERIENCE (웹 UI/UX 디자인)"
+                    title: "LOGISTICS & FULFILLMENT (물류 및 배송)"
                 },
                 {
                     type: "item",
-                    graphic: "web",
+                    graphic: "motion",
                     customImage: "",
-                    title: "반응형 브랜드 웹사이트 UI/UX 디자인",
-                    code: "데스크톱 · 모바일 최적화 그리드 설계 및 인터랙션 프로토타입",
-                    qty: 1,
+                    title: "LOGISTICS & FULFILLMENT (물류 및 배송)",
+                    code: "80개소 개별 소분 포장 및 택배 발송 (단가: ₩3,000)",
+                    qty: 80,
                     originalPrice: 0,
-                    price: 4200000,
+                    price: 3000,
                     subItems: [
-                        { title: "메인 랜딩 페이지 & 브랜드 스토리 쇼케이스", qty: "1식", price: 2400000 },
-                        { title: "제품 아카이브 & 문의 서브 페이지 (6P)", qty: "6P", price: 1800000 }
+                        { title: "A4 에어캡 안전봉투 및 부자재 포장", qty: "개별 포장", price: 0 },
+                        { title: "80개소 개별 택배 발송 (개당 3,000원)", qty: "80개소", price: 240000 }
                     ]
                 }
             ],
             notesTitle: "NOTES",
-            notesContent: "• 본 견적서는 발행일로부터 30일간 유효하며, 인쇄 제작비(용지/후가공 실비)는 별도입니다.\n• 입금 계좌: 신한은행 140-012-987654 (예금주: 스튜디오모노리스)",
+            notesContent: "• 본 견적서는 발행일로부터 30일간 유효하며, 부가가치세를 포함한 가격입니다.\n• 입금 계좌: 우리은행 1002-255-198957 (예금주: 심재정)",
             extraSummary: [
                 { label: "VAT (부가가치세 10%)", value: "10%" }
             ],
-            footerAddress: "서울특별시 성동구 연무장길 73, 4F\n스튜디오 모노리스 · 대표 이서준\nhello@studiomonolith.kr · 02-512-0901",
+            footerAddress: "상호명: 홍디자인 (대표자: 심재정)\n(11486) 경기도 양주시 삼숭로 38번길 191\ntlawowjd0809@naver.com · 010-9053-9323",
             footerThankYou: "THANKS FOR\nYOUR BUSINESS",
-            website: "www.studiomonolith.kr"
+            website: "HONG DESIGN · tlawowjd0809@naver.com"
         };
 
         // 영문 기본 프리셋 데이터
